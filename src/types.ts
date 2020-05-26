@@ -8,7 +8,7 @@ export type OphanProduct =
 	| 'PRINT_SUBSCRIPTION';
 
 export interface EngagementBannerTemplateParams {
-	titles?: Array<string>;
+	titles?: string[];
 	leadSentence?: string;
 	closingSentence?: string;
 	messageText: string;
@@ -24,7 +24,7 @@ export interface EngagementBannerTemplateParams {
 	subsLinkUrl?: string;
 }
 export interface EngagementBannerTestParams {
-	titles?: Array<string>;
+	titles?: string[];
 	leadSentence?: string;
 	messageText?: string;
 	ctaText?: string;
@@ -44,7 +44,7 @@ type ListenerFunction = (f: () => void) => void;
 
 export interface Variant {
 	id: string;
-	test: (x: Object) => void;
+	test: (x: Record<string, unknown>) => void;
 	campaignCode?: string;
 	canRun?: () => boolean;
 	impression?: ListenerFunction;
