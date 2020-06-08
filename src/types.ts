@@ -26,53 +26,19 @@ export type OphanProduct =
 	| 'DIGITAL_SUBSCRIPTION'
 	| 'PRINT_SUBSCRIPTION';
 
-export interface EngagementBannerTemplateParams {
-	titles?: string[];
-	leadSentence?: string;
-	closingSentence?: string;
-	messageText: string;
-	mobileMessageText?: string;
-	ctaText: string;
-	buttonCaption: string;
-	linkUrl: string;
-	hasTicker: boolean;
-	tickerHeader?: string;
-	signInUrl?: string;
-	secondaryLinkUrl?: string;
-	secondaryLinkLabel?: string;
-	subsLinkUrl?: string;
+export interface OphanABEvent {
+	variantName: string;
+	complete: string | boolean;
+	campaignCodes?: ReadonlyArray<string>;
 }
 
-/**
- * AllExistingSupporters - all recurring, all one-offs in last 3 months
- * AllNonSupporters - no recurring, no one-offs in last 3 months
- * Everyone
- * PostAskPauseSingleContributors - people who made a contribution more than 3 months ago
- *
- * Note - PostAskPauseSingleContributors is a subset of AllNonSupporters, so priority ordering of these tests is important
- */
-export type AcquisitionsComponentUserCohort =
-	| 'AllExistingSupporters'
-	| 'AllNonSupporters'
-	| 'Everyone'
-	| 'PostAskPauseSingleContributors';
+export type OphanABPayload = {
+	[testId: string]: OphanABEvent;
+};
 
-export interface EngagementBannerTestParams {
-	titles?: string[];
-	leadSentence?: string;
-	messageText?: string;
-	ctaText?: string;
-	buttonCaption?: string;
-	linkUrl?: string;
-	hasTicker?: boolean;
-	tickerHeader?: string;
-	products?: OphanProduct[];
-	template?: (templateParams: EngagementBannerTemplateParams) => string;
-	bannerModifierClass?: string;
-	minArticlesBeforeShowingBanner?: number;
-	userCohort?: AcquisitionsComponentUserCohort;
-	bannerShownCallback?: () => void;
-}
+export type OphanRecordFunction = (send: {
+	[key: string]: OphanABPayload;
+}) => void;
 
 type ListenerFunction = (f: () => void) => void;
 
@@ -83,7 +49,6 @@ export interface Variant {
 	canRun?: () => boolean;
 	impression?: ListenerFunction;
 	success?: ListenerFunction;
-	engagementBannerParams?: EngagementBannerTestParams;
 }
 
 export interface ABTest {
@@ -107,3 +72,10 @@ export interface ABTest {
 export type Runnable<ABTest> = ABTest & {
 	variantToRun: Variant;
 };
+
+export type ServerSideTests = {
+	[key: string]: string;
+};
+
+// We don't know what the error reporter for the platform might need
+export type ErrorReporterFunc = (...args: unknown[]) => void;
