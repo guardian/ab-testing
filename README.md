@@ -4,6 +4,11 @@ Client-side ab testing framework (broken out from Frontend)
 
 ## API
 
+The AB test libary is split into x modules:
+
+-   AB Test Core, for initalisation of the ab test framework
+-   AB Test Ophan, for initialisation of Ophan tracking for AB tests
+
 ### AB Test Core
 
 Initalise the AB Test framework with `initAbCore()`
@@ -47,6 +52,36 @@ const abTestLibDefault = initABCore(initABCoreDefaultConfig);
 abTestLibDefault.runnableTest();
 abTestLibDefault.allRunnableTests();
 abTestLibDefault.firstRunnableTest();
+```
+
+### AB Test Ophan
+
+Initalise the Ophan Record events
+
+```ts
+export const initAbOphan = (
+	serverSideTests: ServerSideTests, // Pass a serverSideTest object containing MVT tests
+	errorReporter: ErrorReporterFunc, // Pass an error reporter, probably Sentry
+	ophanRecord: OphanRecordFunction, // Pass the ophanRecord function
+): abOphanAPI
+```
+
+`initAbOphan(...)` returns the Ophan AB tests API.
+
+```ts
+// Pass the configuration from the platform that the AB test Ophan reporting relies on
+const initABOphanDefaultConfig = {
+	serverSideTests: { abTestServer: 'variant' }, // In Frontend from window.guaridan.config.tests
+	errorReporter: sentry.reportError,
+	ophanRecord: ophan.record,
+};
+
+const abTestLibOphan = initABOphan(initABOphanDefaultConfig);
+
+// Provides access to
+abTestLibOphan.registerCompleteEvents(tests);
+abTestLibOphan.registerImpressionEvents(tests);
+abTestLibOphan.trackABTests(tests);
 ```
 
 ## TODO
