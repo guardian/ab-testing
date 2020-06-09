@@ -1,12 +1,19 @@
 import { Runnable, ABTest, Variant } from '../types';
 
-type genVariantConfig = { id: string; canRun?: boolean };
+type genVariantConfig = {
+	id: string;
+	canRun?: boolean;
+	success?: (complete: () => void) => void;
+	impression?: (track: () => void) => void;
+};
 export const genVariant = (genVariantConfig: genVariantConfig): Variant => {
-	const { id, canRun } = genVariantConfig;
+	const { id, canRun, success, impression } = genVariantConfig;
 	return {
 		id,
 		test: (): undefined => undefined,
 		...(canRun != null ? { canRun: (): boolean => !!canRun } : {}),
+		success: success || undefined,
+		impression: impression || undefined,
 	};
 };
 
@@ -51,8 +58,10 @@ export const genAbTest = (genAbConfig: genAbConfig): ABTest => {
 export const genRunnableAbTestWhereControlIsRunnable = (
 	id: string,
 	canRun?: boolean,
+	variants?: Variant[],
 ): Runnable<ABTest> => {
-	const abTest = genAbTest({ id, canRun });
+	const abTest = genAbTest({ id, canRun, variants });
+
 	return {
 		...abTest,
 		variantToRun: abTest.variants[0],
