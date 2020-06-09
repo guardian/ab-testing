@@ -47,12 +47,14 @@ export const initABCore = (config: initABCoreConfig): abCoreAPI => {
 		const isTestOn = abTestSwitches[test.id] && !!abTestSwitches[test.id];
 		const canTestBeRun = !test.canRun || test.canRun();
 
-		// console.log('expired', expired);
-		// console.log('isSensitive', isSensitive);
-		// console.log('shouldShowForSensitive', shouldShowForSensitive);
-		// console.log('isTestOn', isTestOn);
-		// console.log('canTestBeRun', canTestBeRun);
-		// console.log('test.canRun()', test.canRun());
+		// console.log({
+		// 	expired,
+		// 	isSensitive,
+		// 	shouldShowForSensitive,
+		// 	isTestOn,
+		// 	canTestBeRun,
+		// 	testCanRun: test.canRun(),
+		// });
 
 		return (
 			(isSensitive ? shouldShowForSensitive : true) &&
@@ -96,10 +98,12 @@ export const initABCore = (config: initABCoreConfig): abCoreAPI => {
 		const forcedOutOfTest = forcedTestException === test.id;
 		const variantToRun = fromForcedTest || fromCookie;
 
-		// console.log('ftv', forcedTestVariant);
-		// console.log('fft', fromForcedTest);
-		// console.log('vtr', variantToRun);
-		// console.log('tcbr', testCanBeRun(test));
+		// console.log({
+		// 	forcedOutOfTest,
+		// 	fromForcedTest,
+		// 	variantToRun,
+		// 	testCanBeRun: testCanBeRun(test),
+		// });
 
 		if (
 			!forcedOutOfTest &&
