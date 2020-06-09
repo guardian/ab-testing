@@ -117,6 +117,7 @@ export const initABCore = (config: initABCoreConfig): abCoreAPI => {
 			};
 		}
 
+		// The test and variant isn't runnable, sorry
 		return null;
 	};
 
