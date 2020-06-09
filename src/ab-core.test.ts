@@ -20,37 +20,41 @@ describe('A/B tests', () => {
 
 	describe('runnableTest', () => {
 		test('should return null for an expired test', () => {
-			const expiredTest = genAbTest('DummyTest', true, '2000-01-01');
+			const expiredTest = genAbTest({
+				id: 'DummyTest',
+				canRun: true,
+				expiry: '2000-01-01',
+			});
 			expect(abTestLibDefault.runnableTest(expiredTest)).toEqual(null);
 		});
 
 		test('should return null for a test which is switched off', () => {
-			const test = genAbTest('DummyTest');
+			const test = genAbTest({ id: 'DummyTest' });
 			const rt = abTestLibDefault.runnableTest(test);
 			expect(rt).toBeNull();
 		});
 
 		test('should return null if the test cannot be run', () => {
-			const test = genAbTest('DummyTest', false);
+			const test = genAbTest({ id: 'DummyTest', canRun: false });
 			expect(abTestLibDefault.runnableTest(test)).toBeNull();
 		});
 
 		test('should return null if the test can be run but the variant cannot', () => {
-			const test = genAbTest('DummyTest', true, '9999-12-12', [
-				genVariant('control', false),
-			]);
+			const test = genAbTest({
+				id: 'DummyTest',
+				canRun: true,
+				expiry: '9999-12-12',
+				variants: [genVariant({ id: 'control', canRun: false })],
+			});
 			expect(abTestLibDefault.runnableTest(test)).toBeNull();
 		});
 
 		test('should return null if the mvtId is not in the audience offset', () => {
-			const test = genAbTest(
-				'DummyTest',
-				true,
-				undefined,
-				undefined,
-				undefined,
-				0.5,
-			);
+			const test = genAbTest({
+				id: 'DummyTest',
+				canRun: true,
+				audienceOffset: 0.5,
+			});
 			expect(abTestLibDefault.runnableTest(test)).toBeNull();
 		});
 
@@ -61,14 +65,11 @@ describe('A/B tests', () => {
 					mvtCookieId: 600000,
 				},
 			});
-			const test = genAbTest(
-				'DummyTest',
-				true,
-				undefined,
-				undefined,
-				undefined,
-				0.5,
-			);
+			const test = genAbTest({
+				id: 'DummyTest',
+				canRun: true,
+				audienceOffset: 0.5,
+			});
 			expect(abTestLib.runnableTest(test)).not.toBeNull();
 		});
 
@@ -78,11 +79,11 @@ describe('A/B tests', () => {
 				...{
 					forcedTestVariant: {
 						testId: 'DummyTest',
-						variant: genVariant('variant123', true),
+						variant: genVariant({ id: 'variant123', canRun: true }),
 					},
 				},
 			});
-			const test = genAbTest('DummyTest', true);
+			const test = genAbTest({ id: 'DummyTest', canRun: true });
 			const rt = abTestLib.runnableTest(test);
 			expect(rt).not.toBeNull();
 			if (rt) {
@@ -96,14 +97,18 @@ describe('A/B tests', () => {
 				...{
 					forcedTestVariant: {
 						testId: 'NotDummyTest',
-						variant: genVariant('variant123', true),
+						variant: genVariant({ id: 'variant123', canRun: true }),
 					},
 				},
 			});
-			const test = genAbTest('DummyTest', true, undefined, [
-				genVariant('control234', true),
-				genVariant('variant234', true),
-			]);
+			const test = genAbTest({
+				id: 'DummyTest',
+				canRun: true,
+				variants: [
+					genVariant({ id: 'control234', canRun: true }),
+					genVariant({ id: 'variant234', canRun: true }),
+				],
+			});
 			const rt = abTestLib.runnableTest(test);
 			expect(rt).not.toBeNull();
 			if (rt) {
@@ -112,14 +117,18 @@ describe('A/B tests', () => {
 		});
 
 		test('should return the variantToRun specified by the cookie, if forced variant is absent (odd cookie)', () => {
-			const test = genAbTest('DummyTest', true, undefined, [
-				genVariant('control234', true),
-				genVariant('variant234', true),
-			]);
+			const test = genAbTest({
+				id: 'DummyTest',
+				canRun: true,
+				variants: [
+					genVariant({ id: 'control456', canRun: true }),
+					genVariant({ id: 'variant456', canRun: true }),
+				],
+			});
 			const rt = abTestLibDefault.runnableTest(test);
 			expect(rt).not.toBeNull();
 			if (rt) {
-				expect(rt.variantToRun).toHaveProperty('id', 'control234');
+				expect(rt.variantToRun).toHaveProperty('id', 'control456');
 			}
 		});
 
@@ -130,14 +139,18 @@ describe('A/B tests', () => {
 					mvtCookieId: 1245,
 				},
 			});
-			const test = genAbTest('DummyTest', true, undefined, [
-				genVariant('control234', true),
-				genVariant('variant234', true),
-			]);
+			const test = genAbTest({
+				id: 'DummyTest',
+				canRun: true,
+				variants: [
+					genVariant({ id: 'control789', canRun: true }),
+					genVariant({ id: 'variant789', canRun: true }),
+				],
+			});
 			const rt = abTestLib.runnableTest(test);
 			expect(rt).not.toBeNull();
 			if (rt) {
-				expect(rt.variantToRun).toHaveProperty('id', 'variant234');
+				expect(rt.variantToRun).toHaveProperty('id', 'variant789');
 			}
 		});
 
@@ -147,11 +160,11 @@ describe('A/B tests', () => {
 				...{ forcedTestException: 'DummyTestException' },
 			});
 
-			const test = genAbTest('DummyTest', true);
+			const test = genAbTest({ id: 'DummyTest', canRun: true });
 			const rt = abTestLib.runnableTest(test);
 			expect(rt).not.toBeNull();
 
-			const testException = genAbTest('DummyTestException');
+			const testException = genAbTest({ id: 'DummyTestException' });
 			const rtException = abTestLib.runnableTest(testException);
 			expect(rtException).toBeNull();
 		});
