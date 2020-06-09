@@ -1,3 +1,27 @@
+export type exampleAPI = {
+	deleteme: boolean;
+};
+
+export type ConfigType = {
+	mvtMaxValue: number;
+	mvtCookieId: number;
+	pageIsSensitive: boolean;
+	abTestSwitches: Record<string, boolean>;
+	forcedTestVariant?: { testId: ABTest['id']; variant: Variant };
+	forcedTestException?: ABTest['id'];
+	deleteme?: boolean;
+};
+
+export type coreAPI = {
+	runnableTest: (test: ABTest) => Runnable<ABTest> | null;
+	allRunnableTests: (
+		tests: ReadonlyArray<ABTest>,
+	) => ReadonlyArray<Runnable<ABTest>> | [];
+	firstRunnableTest: (
+		tests: ReadonlyArray<ABTest>,
+	) => Runnable<ABTest> | null;
+};
+
 export type OphanProduct =
 	| 'CONTRIBUTION'
 	| 'RECURRING_CONTRIBUTION'

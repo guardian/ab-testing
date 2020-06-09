@@ -1,26 +1,8 @@
-import { ABTest, Variant, Runnable } from './types';
+import { ABTest, Variant, Runnable, ConfigType, coreAPI } from './types';
 // import { getVariantFromLocalStorage } from './ab-local-storage'; // Deprecating from localstorage
 import { isExpired } from './lib/time-utils';
 
-type abCoreAPI = {
-	runnableTest: (test: ABTest) => Runnable<ABTest> | null;
-	allRunnableTests: (
-		tests: ReadonlyArray<ABTest>,
-	) => ReadonlyArray<Runnable<ABTest>> | [];
-	firstRunnableTest: (
-		tests: ReadonlyArray<ABTest>,
-	) => Runnable<ABTest> | null;
-};
-
-type initABCoreConfig = {
-	mvtMaxValue: number;
-	mvtCookieId: number;
-	pageIsSensitive: boolean;
-	abTestSwitches: Record<string, boolean>;
-	forcedTestVariant?: { testId: ABTest['id']; variant: Variant };
-	forcedTestException?: ABTest['id'];
-};
-export const initABCore = (config: initABCoreConfig): abCoreAPI => {
+export const initCore = (config: ConfigType): coreAPI => {
 	const {
 		mvtMaxValue,
 		mvtCookieId,
@@ -82,7 +64,7 @@ export const initABCore = (config: initABCoreConfig): abCoreAPI => {
 	// actually has a variant which could run on this pageview.
 	//
 	// This function can be called at any time, it should always give the same result for a given pageview.
-	const runnableTest: abCoreAPI['runnableTest'] = (test) => {
+	const runnableTest: coreAPI['runnableTest'] = (test) => {
 		// const fromLocalStorage = getVariantFromLocalStorage(test); // We're deprecating accessing localstorage
 		const fromCookie = computeVariantFromMvtCookie(test);
 		const fromForcedTest =
@@ -111,7 +93,7 @@ export const initABCore = (config: initABCoreConfig): abCoreAPI => {
 	};
 
 	// please ignore
-	const allRunnableTests: abCoreAPI['allRunnableTests'] = (tests) =>
+	const allRunnableTests: coreAPI['allRunnableTests'] = (tests) =>
 		tests.reduce<Runnable<ABTest>[]>((prev, currentValue) => {
 			// in this pr
 			const rt = runnableTest(currentValue); // i will remove these comments
@@ -119,7 +101,7 @@ export const initABCore = (config: initABCoreConfig): abCoreAPI => {
 		}, []); // ta
 
 	// Please ignore
-	const firstRunnableTest: abCoreAPI['firstRunnableTest'] = (tests) =>
+	const firstRunnableTest: coreAPI['firstRunnableTest'] = (tests) =>
 		tests // in this pr
 			.map((test: ABTest) => runnableTest(test)) // I will remove these comments
 			.find((rt: Runnable<ABTest> | null) => rt !== null) || null; // so that this API can be reviewed seperate
