@@ -31,8 +31,14 @@ export const initABCore = (config: initABCoreConfig): abCoreAPI => {
 	} = config;
 	// We only take account of a variant's canRun function if it's defined.
 	// If it's not, assume the variant can be run.
-	const variantCanBeRun = (variant: Variant): boolean =>
-		!(variant.canRun && !variant.canRun()) && variant.id !== 'notintest';
+	const variantCanBeRun = (variant: Variant): boolean => {
+		const isInTest = variant.id !== 'notintest';
+		if (variant.canRun) {
+			return variant.canRun() && isInTest;
+		} else {
+			return isInTest;
+		}
+	};
 
 	const testCanBeRun = (test: ABTest): boolean => {
 		const expired = isExpired(test.expiry);
