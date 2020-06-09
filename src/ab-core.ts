@@ -81,6 +81,7 @@ export const initABCore = (config: initABCoreConfig): abCoreAPI => {
 			return test.variants[mvtCookieId % test.variants.length];
 		}
 
+		// We return null if there is no variant that matches the test and variant fot the mvtCookieId
 		return null;
 	};
 
