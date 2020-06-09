@@ -1,4 +1,3 @@
-// @flow
 import { isExpired } from './time-utils';
 const startDate = new Date();
 describe('Check if isExpired', () => {
