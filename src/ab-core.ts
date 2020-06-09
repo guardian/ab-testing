@@ -42,14 +42,13 @@ export const initABCore = (config: initABCoreConfig): abCoreAPI => {
 
 	const testCanBeRun = (test: ABTest): boolean => {
 		const expired = isExpired(test.expiry);
-		const isSensitive = pageIsSensitive;
-		const shouldShowForSensitive = !!test.showForSensitive;
+		const testShouldShowForSensitive = !!test.showForSensitive;
 		const isTestOn = abTestSwitches[test.id] && !!abTestSwitches[test.id];
 		const canTestBeRun = !test.canRun || test.canRun();
 
 		// console.log({
 		// 	expired,
-		// 	isSensitive,
+		// 	pageIsSensitive,
 		// 	shouldShowForSensitive,
 		// 	isTestOn,
 		// 	canTestBeRun,
@@ -57,7 +56,7 @@ export const initABCore = (config: initABCoreConfig): abCoreAPI => {
 		// });
 
 		return (
-			(isSensitive ? shouldShowForSensitive : true) &&
+			(pageIsSensitive ? testShouldShowForSensitive : true) &&
 			isTestOn &&
 			!expired &&
 			canTestBeRun
