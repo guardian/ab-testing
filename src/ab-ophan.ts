@@ -32,6 +32,7 @@ const makeABEvent = (variant: Variant, complete: boolean): OphanABEvent => {
 		complete,
 	};
 
+	// TODO Test me
 	if (variant.campaignCode) {
 		event.campaignCodes = [variant.campaignCode];
 	}
@@ -95,6 +96,7 @@ const buildOphanPayload = (
 			(test) => !!serverSideTestObj[test],
 		);
 
+		// TODO Test tests vs serverside tests
 		tests
 			.filter((test) => !defersImpression(test))
 			.forEach((test) => {
