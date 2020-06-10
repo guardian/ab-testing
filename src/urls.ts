@@ -25,5 +25,6 @@ export const getVariantFromUrl = (test: ABTest): Variant | undefined | null =>
 // Useful if you want to force a test even when it normally wouldn't run
 // (for example, to display a specific epic variant to verify it renders
 // okay).
+// TODO test this
 export const getIgnoreCanRunFromUrl = (): boolean =>
 	window.location.hash.includes('ignoreCanRun=true');
