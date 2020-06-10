@@ -9,83 +9,50 @@ The AB test libary is split into x modules:
 -   AB Test Core, for initalisation of the ab test framework
 -   AB Test Ophan, for initialisation of Ophan tracking for AB tests
 
-### AB Test Core
-
-Initalise the AB Test framework with `initAbCore()`
+### Initialise AB Tests
 
 ```ts
-type initABCoreConfig = {
-    mvtMaxValue: number;
-    mvtCookieId: number;
-    pageIsSensitive: boolean;
-    abTestSwitches: Record<string, boolean>;
-    forcedTestVariant?: { testId: ABTest['id']; variant: Variant };
-    forcedTestException?: ABTest['id'];
-};
+import { initalise } from '@guardian/ab-rendering';
 
-// mvtMaxValue: MVT % is calculated from 0 to mvtMaxValue
-// mvtCookieId: The user's MVT ID to calculate what tests and variants they fall into
-// pageIsSensitive: In Frontend set by page.config.isSensitive
-// abTestSwitches: An object containing all of the boolean values of abTestSwitches, in Frontend from page.config.switches.abTests
-// forcedTestVariant: In Frontend this might be set by the URL override, but otherwise can be used to force a user into a test and variant at init time
-// forcedTestException: Can be used to force a user out of a test (in Frontend, again with url override)
+// See config object values below
+const coreConfig = {};
+const ophanConfig = {};
 
-export const initABCore = (config: initABCoreConfig): coreAPI
+const abTests = intialise(coreConfig, ophanConfig);
+
+// Provides access to:
+// test being a single AB tests
+// [tests] being an array of ab tests
+abTests.core.runnableTest(test);
+abTests.core.allRunnableTests([tests]);
+abTests.core.firstRunnableTest([tests]);
+
+// [tests] being an array of *runnable* ab tests
+abTest.ophan.registerCompleteEvents([tests]);
+abTest.ophan.registerImpressionEvents([tests]);
+abTest.ophan.trackABTests([tests]);
 ```
 
-`initAbCore(...)` returns the core API.
+#### coreConfig
 
-```ts
-// Pass the configuration from the platform that the AB tests rely on
-const initABCoreDefaultConfig = {
-	mvtMaxValue: 1000000,
-	mvtCookieId: 1234,
-	pageIsSensitive: false,
-	abTestSwitches: {
-		DummyTest: true,
-	},
-};
+| Config              | Type                                                 | Example                          | Note                                                                                                                              |
+| ------------------- | ---------------------------------------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| mvtMaxValue         | number                                               | `10000`                          | MVT % is calculated from 0 to mvtMaxValue                                                                                         |
+| mvtCookieId         | number                                               | getCookie('mvtCookie')           | The user's MVT ID to calculate what tests and variants they fall into                                                             |
+| pageIsSensitive     | boolean                                              | guardian.config.page.isSensitive | Sensitive pages must have explicit settings in AB tests                                                                           |
+| abTestSwitches      | Record<string, boolean>                              | {'TestOne': true}                | An object containing all of the boolean values of abTestSwitches, in Frontend from page.config.switches.abTests                   |
+| forcedTestVariant   | Optional: { testId: ABTest['id']; variant: Variant } |                                  | In Frontend this might be set by the URL override, but otherwise can be used to force a user into a test and variant at init time |
+| forcedTestException | Optional: ABTest['id']                               |                                  | Can be used to force a user out of a test (in Frontend, again with url override)                                                  |
 
-const abTestLibDefault = initABCore(initABCoreDefaultConfig);
+#### ophanConfig
 
-// Provides access to
-abTestLibDefault.runnableTest();
-abTestLibDefault.allRunnableTests();
-abTestLibDefault.firstRunnableTest();
-```
-
-### AB Test Ophan
-
-Initalise the Ophan Record events
-
-```ts
-export const initAbOphan = (
-	serverSideTests: ServerSideTests, // Pass a serverSideTest object containing MVT tests
-	errorReporter: ErrorReporterFunc, // Pass an error reporter, probably Sentry
-	ophanRecord: OphanRecordFunction, // Pass the ophanRecord function
-): abOphanAPI
-```
-
-`initAbOphan(...)` returns the Ophan AB tests API.
-
-```ts
-// Pass the configuration from the platform that the AB test Ophan reporting relies on
-const initABOphanDefaultConfig = {
-	serverSideTests: { abTestServer: 'variant' }, // In Frontend from window.guaridan.config.tests
-	errorReporter: sentry.reportError,
-	ophanRecord: ophan.record,
-};
-
-const abTestLibOphan = initABOphan(initABOphanDefaultConfig);
-
-// Provides access to
-abTestLibOphan.registerCompleteEvents(tests);
-abTestLibOphan.registerImpressionEvents(tests);
-abTestLibOphan.trackABTests(tests);
-```
+| Config         | Type                | Example | Note                                                      |
+| -------------- | ------------------- | ------- | --------------------------------------------------------- |
+| ServerSideTets | ServerSideTests     |         | ServerSideTets are accessed via window config in Frontend |
+| errorReporter  | ErrorReporterFunc   |         | Pass an error reporter, probably Sentry                   |
+| ophanRecord    | OphanRecordFunction |         | Probably Ophan's 'record' function                        |
 
 ## TODO
 
--   bundling https://www.npmjs.com/package/microbundle ✅
 -   Generate flow types from Typescript definition https://github.com/joarwilk/flowgen
 -   Move time-utils to a packaged lib folder
