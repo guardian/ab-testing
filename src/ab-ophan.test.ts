@@ -38,8 +38,8 @@ describe('A/B Ophan analytics', () => {
 		};
 		abTestOphan.registerCompleteEvents([
 			genRunnableAbTestWhereControlIsRunnable('DummyTest', undefined, [
-				genVariant('control', undefined, successFunc),
-				genVariant('variant'),
+				genVariant({ id: 'control', success: successFunc }),
+				genVariant({ id: 'variant' }),
 			]),
 			genRunnableAbTestWhereControlIsRunnable('DummyTest2'),
 		]);
@@ -86,8 +86,8 @@ describe('A/B Ophan analytics', () => {
 		};
 		abTestOphan.registerCompleteEvents([
 			genRunnableAbTestWhereControlIsRunnable('DummyTestA', undefined, [
-				genVariant('controlA', undefined, successFunc),
-				genVariant('variantA'),
+				genVariant({ id: 'controlA', success: successFunc }),
+				genVariant({ id: 'variantA' }),
 			]),
 			genRunnableAbTestWhereControlIsRunnable('DummyTest2A'),
 		]);
@@ -107,8 +107,8 @@ describe('A/B Ophan analytics', () => {
 
 		abTestOphan.registerImpressionEvents([
 			genRunnableAbTestWhereControlIsRunnable('DummyTest3', undefined, [
-				genVariant('control1', undefined, undefined, impressionFunc),
-				genVariant('variant1', undefined, undefined, impressionFunc),
+				genVariant({ id: 'control1', impression: impressionFunc }),
+				genVariant({ id: 'variant1', impression: impressionFunc }),
 			]),
 			genRunnableAbTestWhereControlIsRunnable('DummyTest4'),
 		]);
@@ -178,8 +178,8 @@ describe('A/B Ophan analytics', () => {
 
 		abTestOphan.trackABTests([
 			genRunnableAbTestWhereControlIsRunnable('DummyTest', undefined, [
-				genVariant('control'),
-				genVariant('variant'),
+				genVariant({ id: 'control' }),
+				genVariant({ id: 'variant' }),
 			]),
 			genRunnableAbTestWhereControlIsRunnable('DummyTest2'),
 		]);
