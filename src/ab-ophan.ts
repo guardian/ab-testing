@@ -7,6 +7,8 @@ import {
 	ServerSideTests,
 	ErrorReporterFunc,
 	OphanRecordFunction,
+	OphanAPIConfig,
+	OphanAPI,
 } from './types';
 
 type Noop = () => void;
@@ -116,22 +118,10 @@ const buildOphanPayload = (
 	}
 };
 
-type abOphanAPI = {
-	registerCompleteEvents: (tests: ReadonlyArray<Runnable<ABTest>>) => void;
-	registerImpressionEvents: (tests: ReadonlyArray<Runnable<ABTest>>) => void;
-	trackABTests: (tests: ReadonlyArray<Runnable<ABTest>>) => void;
-};
-
-type abOphanAPIConfig = {
-	serverSideTests: ServerSideTests;
-	errorReporter: ErrorReporterFunc;
-	ophanRecord: OphanRecordFunction;
-};
-
-export const initAbOphan = (config: abOphanAPIConfig): abOphanAPI => {
+export const initOphan = (config: OphanAPIConfig): OphanAPI => {
 	const { serverSideTests, errorReporter, ophanRecord } = config;
 
-	const registerCompleteEvents: abOphanAPI['registerCompleteEvents'] = (
+	const registerCompleteEvents: OphanAPI['registerCompleteEvents'] = (
 		tests,
 	) => {
 		return tests.forEach(
@@ -139,14 +129,14 @@ export const initAbOphan = (config: abOphanAPIConfig): abOphanAPI => {
 		);
 	};
 
-	const registerImpressionEvents: abOphanAPI['registerImpressionEvents'] = (
+	const registerImpressionEvents: OphanAPI['registerImpressionEvents'] = (
 		tests,
 	) =>
 		tests
 			.filter(defersImpression)
 			.forEach(registerCompleteEvent(false, errorReporter, ophanRecord));
 
-	const trackABTests: abOphanAPI['trackABTests'] = (tests) =>
+	const trackABTests: OphanAPI['trackABTests'] = (tests) =>
 		submit(
 			buildOphanPayload(tests, serverSideTests, errorReporter),
 			ophanRecord,

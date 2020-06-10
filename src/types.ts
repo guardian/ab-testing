@@ -17,6 +17,18 @@ export type coreAPI = {
 	) => Runnable<ABTest> | null;
 };
 
+export type OphanAPIConfig = {
+	serverSideTests: ServerSideTests;
+	errorReporter: ErrorReporterFunc;
+	ophanRecord: OphanRecordFunction;
+};
+
+export type OphanAPI = {
+	registerCompleteEvents: (tests: ReadonlyArray<Runnable<ABTest>>) => void;
+	registerImpressionEvents: (tests: ReadonlyArray<Runnable<ABTest>>) => void;
+	trackABTests: (tests: ReadonlyArray<Runnable<ABTest>>) => void;
+};
+
 export type OphanProduct =
 	| 'CONTRIBUTION'
 	| 'RECURRING_CONTRIBUTION'

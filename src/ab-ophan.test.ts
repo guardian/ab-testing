@@ -1,4 +1,4 @@
-import { initAbOphan } from './ab-ophan';
+import { initOphan } from './ab-ophan';
 import {
 	genRunnableAbTestWhereControlIsRunnable,
 	genVariant,
@@ -18,7 +18,7 @@ export const initABCoreDefaultConfig = {
 const mockErrorReporter = jest.fn((error) => error);
 const mockOphanRecord = jest.fn((record) => record);
 
-const initABOphanDefaultConfig = {
+const initOphanDefaultConfig = {
 	serverSideTests: {},
 	errorReporter: mockErrorReporter,
 	ophanRecord: mockOphanRecord,
@@ -28,8 +28,8 @@ describe('A/B Ophan analytics', () => {
 	test('Ophan data structure contains the correct values for completion of success', () => {
 		const ophanRecord: OphanRecordFunction = (send) => send;
 		const mockOphanRecord = jest.fn(ophanRecord);
-		const abTestOphan = initAbOphan({
-			...initABOphanDefaultConfig,
+		const abTestOphan = initOphan({
+			...initOphanDefaultConfig,
 			...{ ophanRecord: mockOphanRecord },
 		});
 
@@ -58,8 +58,8 @@ describe('A/B Ophan analytics', () => {
 	test('Ophan data structure contains the correct values for completion of success when delayed', (done) => {
 		const ophanRecord: OphanRecordFunction = (send) => send;
 		const mockOphanRecord = jest.fn(ophanRecord);
-		const abTestOphan = initAbOphan({
-			...initABOphanDefaultConfig,
+		const abTestOphan = initOphan({
+			...initOphanDefaultConfig,
 			...{ ophanRecord: mockOphanRecord },
 		});
 
@@ -96,8 +96,8 @@ describe('A/B Ophan analytics', () => {
 	test('Ophan data structure contains the correct values for completion of impression', () => {
 		const ophanRecord: OphanRecordFunction = (send) => send;
 		const mockOphanRecord = jest.fn(ophanRecord);
-		const abTestOphan = initAbOphan({
-			...initABOphanDefaultConfig,
+		const abTestOphan = initOphan({
+			...initOphanDefaultConfig,
 			...{ ophanRecord: mockOphanRecord },
 		});
 
@@ -125,7 +125,7 @@ describe('A/B Ophan analytics', () => {
 	});
 
 	test('success function fires when canRun is true', () => {
-		const abTestOphan = initAbOphan(initABOphanDefaultConfig);
+		const abTestOphan = initOphan(initOphanDefaultConfig);
 		const dummy = genRunnableAbTestWhereControlIsRunnable('DummyTest');
 		dummy.variants[0].success = () => undefined;
 		const spy = jest.spyOn(dummy.variants[0], 'success');
@@ -136,7 +136,7 @@ describe('A/B Ophan analytics', () => {
 	});
 
 	test('success function fires when canRun is false', () => {
-		const abTestOphan = initAbOphan(initABOphanDefaultConfig);
+		const abTestOphan = initOphan(initOphanDefaultConfig);
 		const dummy = genRunnableAbTestWhereControlIsRunnable('DummyTest');
 		dummy.variants[0].success = () => undefined;
 		const spy = jest.spyOn(dummy.variants[0], 'success');
@@ -148,7 +148,7 @@ describe('A/B Ophan analytics', () => {
 	});
 
 	test('defer firing the impression when the function is provided', () => {
-		const abTestOphan = initAbOphan(initABOphanDefaultConfig);
+		const abTestOphan = initOphan(initOphanDefaultConfig);
 		const dummy = genRunnableAbTestWhereControlIsRunnable('DummyTest');
 
 		/**
@@ -171,8 +171,8 @@ describe('A/B Ophan analytics', () => {
 	test('trackABtests fires the ophanRecord with all runnable AB tests', () => {
 		const ophanRecord: OphanRecordFunction = (send) => send;
 		const mockOphanRecord = jest.fn(ophanRecord);
-		const abTestOphan = initAbOphan({
-			...initABOphanDefaultConfig,
+		const abTestOphan = initOphan({
+			...initOphanDefaultConfig,
 			...{ ophanRecord: mockOphanRecord },
 		});
 
