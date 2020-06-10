@@ -1,13 +1,11 @@
-import { ConfigType, coreAPI, exampleAPI } from './types';
+import { ConfigType, coreAPI } from './types';
 
 import { initCore } from './ab-core';
-import { initExample } from './example';
 
-type abAPI = { core: coreAPI; example: exampleAPI };
+type abAPI = { core: coreAPI };
 
 export const initialise = (config: ConfigType): abAPI => {
 	const core = initCore(config);
-	const example = initExample(config);
 
-	return { core, example };
+	return { core };
 };

@@ -1,7 +1,3 @@
-export type exampleAPI = {
-	deleteme: boolean;
-};
-
 export type ConfigType = {
 	mvtMaxValue: number;
 	mvtCookieId: number;
@@ -9,7 +5,6 @@ export type ConfigType = {
 	abTestSwitches: Record<string, boolean>;
 	forcedTestVariant?: { testId: ABTest['id']; variant: Variant };
 	forcedTestException?: ABTest['id'];
-	deleteme?: boolean;
 };
 
 export type coreAPI = {
