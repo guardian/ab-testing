@@ -7,9 +7,12 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"source": "src/ab.ts",
-	"main": "build/ab.js",
-	"module": "build/ab.modern.js",
+	"files": [
+		"dist/**/*"
+	],
+	"source": "src/index.ts",
+	"main": "dist/ab.js",
+	"module": "dist/ab.modern.js",
 	"jest": {
 		"testEnvironment": "jest-environment-jsdom-sixteen"
 	},
