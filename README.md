@@ -25,7 +25,7 @@ type initABCoreConfig = {
 // forcedTestVariant: In Frontend this might be set by the URL override, but otherwise can be used to force a user into a test and variant at init time
 // forcedTestException: Can be used to force a user out of a test (in Frontend, again with url override)
 
-export const initABCore = (config: initABCoreConfig): abCoreAPI
+export const initABCore = (config: initABCoreConfig): coreAPI
 ```
 
 `initAbCore(...)` returns the core API.

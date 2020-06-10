@@ -1,7 +1,7 @@
 import { genAbTest, genVariant } from './fixtures/ab-test';
-import { initABCore } from './ab-core';
+import { initCore } from './ab-core';
 
-const initABCoreDefaultConfig = {
+const initCoreDefaultConfig = {
 	mvtMaxValue: 1000000,
 	mvtCookieId: 1234,
 	pageIsSensitive: false,
@@ -11,7 +11,7 @@ const initABCoreDefaultConfig = {
 	},
 };
 
-const abTestLibDefault = initABCore(initABCoreDefaultConfig);
+const abTestLibDefault = initCore(initCoreDefaultConfig);
 
 describe('A/B tests', () => {
 	beforeEach(() => {
@@ -59,8 +59,8 @@ describe('A/B tests', () => {
 		});
 
 		test('should return true if the mvtId is in the audience offset', () => {
-			const abTestLib = initABCore({
-				...initABCoreDefaultConfig,
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
 				...{
 					mvtCookieId: 600000,
 				},
@@ -74,8 +74,8 @@ describe('A/B tests', () => {
 		});
 
 		test('should return the forced variant on matching test', () => {
-			const abTestLib = initABCore({
-				...initABCoreDefaultConfig,
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
 				...{
 					forcedTestVariant: {
 						testId: 'DummyTest',
@@ -92,8 +92,8 @@ describe('A/B tests', () => {
 		});
 
 		test('should return the variantToRun specified by the cookie, if the test is not the runnableTest param', () => {
-			const abTestLib = initABCore({
-				...initABCoreDefaultConfig,
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
 				...{
 					forcedTestVariant: {
 						testId: 'NotDummyTest',
@@ -133,8 +133,8 @@ describe('A/B tests', () => {
 		});
 
 		test('should return the variantToRun specified by the cookie, if forced variant is absent (even cookie)', () => {
-			const abTestLib = initABCore({
-				...initABCoreDefaultConfig,
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
 				...{
 					mvtCookieId: 1245,
 				},
@@ -155,8 +155,8 @@ describe('A/B tests', () => {
 		});
 
 		test('when forcedTestException is set, it should return null for matching tests and not null for other tests', () => {
-			const abTestLib = initABCore({
-				...initABCoreDefaultConfig,
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
 				...{ forcedTestException: 'DummyTestException' },
 			});
 
