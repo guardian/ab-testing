@@ -19,6 +19,7 @@ export const getForcedParticipationsFromUrl = (): Participations => {
 };
 
 // If the given test has a variant which is forced by the URL, return it
+// TODO test this
 export const getVariantFromUrl = (test: ABTest): Variant | undefined | null =>
 	testAndParticipationsToVariant(test, getForcedParticipationsFromUrl());
 
