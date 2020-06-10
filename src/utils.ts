@@ -1,4 +1,4 @@
-import { ABTest, Variant, Runnable } from './types';
+import { ABTest, Variant, Runnable, Participations } from './types';
 
 const NOT_IN_TEST = 'notintest';
 
@@ -6,12 +6,6 @@ const notInTestVariant = {
 	id: NOT_IN_TEST,
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	test: () => {},
-};
-
-type Participations = {
-	[testId: string]: {
-		variant: string;
-	};
 };
 
 const toPairs = (obj: {
