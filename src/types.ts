@@ -37,6 +37,7 @@ export type AcquisitionsComponentUserCohort =
 	| 'AllNonSupporters'
 	| 'Everyone'
 	| 'PostAskPauseSingleContributors';
+
 export interface EngagementBannerTestParams {
 	titles?: string[];
 	leadSentence?: string;
@@ -66,7 +67,7 @@ export interface Variant {
 	engagementBannerParams?: EngagementBannerTestParams;
 }
 
-export interface AbTest {
+export interface ABTest {
 	id: string;
 	start: string;
 	expiry: string;
@@ -83,3 +84,7 @@ export interface AbTest {
 	canRun: () => boolean;
 	notInTest?: () => void;
 }
+
+export type Runnable<ABTest> = ABTest & {
+	variantToRun: Variant;
+};
