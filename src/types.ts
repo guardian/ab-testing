@@ -88,3 +88,9 @@ export interface ABTest {
 export type Runnable<ABTest> = ABTest & {
 	variantToRun: Variant;
 };
+
+export type Participations = {
+	[testId: string]: {
+		variant: string;
+	};
+};
