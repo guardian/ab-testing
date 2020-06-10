@@ -1,8 +1,11 @@
 // Ideally this would be in a npm lib folder
-export const isExpired = (testExpiry: string): boolean => {
-	// new Date(test.expiry) sets the expiry time to 00:00:00
-	// Using SetHours allows a test to run until the END of the expiry day
-	const startOfToday = new Date().setHours(0, 0, 0, 0);
-	const theTestExpiry = new Date(testExpiry).valueOf();
-	return startOfToday > theTestExpiry;
+export const isExpired = (testExpiry: string | number | Date): boolean => {
+	// Get the current time, we check that right now is not after the end of the text expiry
+	const currentTime = new Date().valueOf();
+
+	// Take the test expiry date and set the hours to the last milisecond of the day
+	const theTestExpiry = new Date(testExpiry).setHours(23, 59, 59, 59);
+
+	// If the endOfToday at 23:59:59 is after the test expiry date at the same time
+	return currentTime > theTestExpiry;
 };

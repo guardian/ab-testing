@@ -1,28 +1,38 @@
 import { isExpired } from './time-utils';
-const startDate = new Date();
+const oneDaySec = 60 * 60 * 24;
+
+const startOfToday = new Date().setHours(0, 0, 0, 0).valueOf();
+
+const startOfTomorrow = startOfToday + oneDaySec;
+const startOfYesterday = startOfToday - oneDaySec;
+
 describe('Check if isExpired', () => {
-	it('It should return true if expired', () => {
-		const datePrev = new Date().setDate(startDate.getDate() - 2);
-		const datePrevString = new Date(datePrev).toString();
-
-		expect(isExpired(datePrevString)).toBeTruthy();
+	it('isExpired is true if expired at the start of the day before', () => {
+		const startOfYesterdayDate = new Date(startOfYesterday);
+		const startOfYesterdayStr = startOfYesterdayDate.toString();
+		expect(isExpired(startOfYesterdayDate)).toBeTruthy();
+		expect(isExpired(startOfYesterdayStr)).toBeTruthy();
 	});
 
-	it('It should return false if not expired', () => {
-		const dateFuture = new Date().setDate(startDate.getDate() + 2);
-		const dateFutureString = new Date(dateFuture).toString();
-
-		expect(isExpired(dateFutureString)).toBeFalsy();
+	it('isExpired is true if the date is in the past', () => {
+		expect(isExpired('1999-01-01')).toBeTruthy();
 	});
 
-	it('It should return false if the time is 11am on the day of expiry', () => {
-		const dateToday11am = new Date().setHours(11);
-		const dateToday11amString = new Date(dateToday11am).toString();
-
-		expect(isExpired(dateToday11amString)).toBeFalsy();
+	it('isExpired is false if it expires at the start of tomorrow', () => {
+		const startOfTomorrowDate = new Date(startOfTomorrow);
+		const startOfTomorrowStr = startOfTomorrowDate.toString();
+		expect(isExpired(startOfTomorrowDate)).toBeFalsy();
+		expect(isExpired(startOfTomorrowStr)).toBeFalsy();
 	});
 
-	it('It should return false if the date passed is far future', () => {
+	it('isExpired is false if it the day of expiry', () => {
+		const rightNowDate = new Date().valueOf().toString();
+		const rightNowStr = rightNowDate.toString();
+		expect(isExpired(rightNowDate)).toBeFalsy();
+		expect(isExpired(rightNowStr)).toBeFalsy();
+	});
+
+	it('isExpired is false if the date passed is far future', () => {
 		expect(isExpired('9999-01-01')).toBeFalsy();
 	});
 });
