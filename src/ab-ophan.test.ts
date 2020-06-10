@@ -25,7 +25,7 @@ const initABOphanDefaultConfig = {
 };
 
 describe('A/B Ophan analytics', () => {
-	test('Ophan data structure contains the correct values', () => {
+	test('Ophan data structure contains the correct values for completion of success', () => {
 		const ophanRecord: OphanRecordFunction = (send) => send;
 		const mockOphanRecord = jest.fn(ophanRecord);
 		const abTestOphan = initAbOphan({
@@ -44,23 +44,84 @@ describe('A/B Ophan analytics', () => {
 			genRunnableAbTestWhereControlIsRunnable('DummyTest2'),
 		]);
 
-		expect(mockOphanRecord).toHaveBeenCalled();
-		// expect(
-		// 	abTestOphan.buildOphanPayload([
-		// 		genRunnableAbTestWhereControlIsRunnable('DummyTest'),
-		// 		genRunnableAbTestWhereControlIsRunnable('DummyTest2'),
-		// 	]),
-		// ).toEqual({
-		// 	DummyTest: {
-		// 		variantName: 'control',
-		// 		complete: 'false',
-		// 	},
+		expect(mockOphanRecord).toHaveBeenCalledTimes(1);
+		expect(mockOphanRecord).toHaveBeenCalledWith({
+			abTestRegister: {
+				DummyTest: {
+					complete: true,
+					variantName: 'control',
+				},
+			},
+		});
+	});
 
-		// 	DummyTest2: {
-		// 		variantName: 'control',
-		// 		complete: 'false',
-		// 	},
-		// });
+	test('Ophan data structure contains the correct values for completion of success when delayed', (done) => {
+		const ophanRecord: OphanRecordFunction = (send) => send;
+		const mockOphanRecord = jest.fn(ophanRecord);
+		const abTestOphan = initAbOphan({
+			...initABOphanDefaultConfig,
+			...{ ophanRecord: mockOphanRecord },
+		});
+
+		const successFunc = (complete: () => void) => {
+			// This could be an event listener for example
+			// but we're testing 'async' code to ensure that
+			// our code handles delayed calling of the complete callback
+
+			setTimeout(() => {
+				complete();
+
+				expect(mockOphanRecord).toHaveBeenCalledTimes(1);
+				expect(mockOphanRecord).toHaveBeenCalledWith({
+					abTestRegister: {
+						DummyTestA: {
+							complete: true,
+							variantName: 'controlA',
+						},
+					},
+				});
+
+				done();
+			}, 100);
+		};
+		abTestOphan.registerCompleteEvents([
+			genRunnableAbTestWhereControlIsRunnable('DummyTestA', undefined, [
+				genVariant('controlA', undefined, successFunc),
+				genVariant('variantA'),
+			]),
+			genRunnableAbTestWhereControlIsRunnable('DummyTest2A'),
+		]);
+	});
+
+	test('Ophan data structure contains the correct values for completion of impression', () => {
+		const ophanRecord: OphanRecordFunction = (send) => send;
+		const mockOphanRecord = jest.fn(ophanRecord);
+		const abTestOphan = initAbOphan({
+			...initABOphanDefaultConfig,
+			...{ ophanRecord: mockOphanRecord },
+		});
+
+		const impressionFunc = (track: () => void) => {
+			track();
+		};
+
+		abTestOphan.registerImpressionEvents([
+			genRunnableAbTestWhereControlIsRunnable('DummyTest3', undefined, [
+				genVariant('control1', undefined, undefined, impressionFunc),
+				genVariant('variant1', undefined, undefined, impressionFunc),
+			]),
+			genRunnableAbTestWhereControlIsRunnable('DummyTest4'),
+		]);
+
+		expect(mockOphanRecord).toHaveBeenCalledTimes(1);
+		expect(mockOphanRecord).toHaveBeenCalledWith({
+			abTestRegister: {
+				DummyTest3: {
+					complete: false,
+					variantName: 'control1',
+				},
+			},
+		});
 	});
 
 	test('success function fires when canRun is true', () => {
@@ -105,5 +166,36 @@ describe('A/B Ophan analytics', () => {
 		expect(
 			controlSpy.mock.calls.length + variantSpy.mock.calls.length,
 		).toEqual(1);
+	});
+
+	test('trackABtests fires the ophanRecord with all runnable AB tests', () => {
+		const ophanRecord: OphanRecordFunction = (send) => send;
+		const mockOphanRecord = jest.fn(ophanRecord);
+		const abTestOphan = initAbOphan({
+			...initABOphanDefaultConfig,
+			...{ ophanRecord: mockOphanRecord },
+		});
+
+		abTestOphan.trackABTests([
+			genRunnableAbTestWhereControlIsRunnable('DummyTest', undefined, [
+				genVariant('control'),
+				genVariant('variant'),
+			]),
+			genRunnableAbTestWhereControlIsRunnable('DummyTest2'),
+		]);
+
+		expect(mockOphanRecord).toHaveBeenCalledTimes(1);
+		expect(mockOphanRecord).toHaveBeenCalledWith({
+			abTestRegister: {
+				DummyTest: {
+					complete: false,
+					variantName: 'control',
+				},
+				DummyTest2: {
+					complete: false,
+					variantName: 'control',
+				},
+			},
+		});
 	});
 });
