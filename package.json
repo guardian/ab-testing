@@ -11,8 +11,8 @@
 		"dist/**/*"
 	],
 	"source": "src/index.ts",
-	"main": "dist/ab.js",
-	"module": "dist/ab.modern.js",
+	"main": "dist/index.js",
+	"module": "dist/index.modern.js",
 	"jest": {
 		"testEnvironment": "jest-environment-jsdom-sixteen"
 	},
