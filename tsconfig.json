@@ -3,7 +3,7 @@
 		"target": "esnext",
 		"module": "esnext",
 		"lib": ["es2017", "es7", "es6", "dom", "DOM.Iterable"],
-		"outDir": "build",
+		"outDir": "dist",
 		"strict": true,
 		"esModuleInterop": true,
 		"jsx": "react",

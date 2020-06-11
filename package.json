@@ -7,9 +7,12 @@
 	"publishConfig": {
 		"access": "public"
 	},
-	"source": "src/ab.ts",
-	"main": "build/ab.js",
-	"module": "build/ab.modern.js",
+	"files": [
+		"dist/**/*"
+	],
+	"source": "src/index.ts",
+	"main": "dist/ab.js",
+	"module": "dist/ab.modern.js",
 	"jest": {
 		"testEnvironment": "jest-environment-jsdom-sixteen"
 	},
@@ -34,7 +37,7 @@
 		"husky": "^4.2.5",
 		"jest": "^26.0.1",
 		"jest-environment-jsdom-sixteen": "^1.0.3",
-		"microbundle": "^0.12.0",
+		"microbundle": "^0.12.0-next.9",
 		"prettier": "^2.0.5",
 		"pretty-quick": "^2.0.1"
 	},
