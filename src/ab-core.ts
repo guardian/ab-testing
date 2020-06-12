@@ -123,13 +123,9 @@ export const initCore = (config: ConfigType): coreAPI => {
 
 	const isUserInVariant: coreAPI['isUserInVariant'] = (test, variantId) =>
 		allRunnableTests(arrayOfTestObjects).some(
-			(runnableTest: ABTest & { variantToRun: Variant }) => {
-				// console.log(runnableTest);
-				return (
-					runnableTest.id === test.id &&
-					runnableTest.variantToRun.id === variantId
-				);
-			},
+			(runnableTest: ABTest & { variantToRun: Variant }) =>
+				runnableTest.id === test.id &&
+				runnableTest.variantToRun.id === variantId,
 		);
 
 	return {
