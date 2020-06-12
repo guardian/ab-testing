@@ -1,4 +1,5 @@
 import { AB } from './ab';
+import { ABType } from './types';
 
 const DEFAULT_CONFIG = {
 	mvtMaxValue: 1000000,
@@ -12,9 +13,11 @@ const DEFAULT_CONFIG = {
 
 describe('A/B Initalisation', () => {
 	test('Initalisation returns API', () => {
-		const myAB = new AB(DEFAULT_CONFIG);
-		expect(myAB.test).not.toBeUndefined();
-		expect(myAB.test?.core).not.toBeUndefined();
-		expect(myAB.test?.ophan).not.toBeUndefined();
+		const myAB: ABType = new AB(DEFAULT_CONFIG);
+		expect(myAB).not.toBeUndefined();
+		expect(myAB.core).not.toBeUndefined();
+		expect(myAB.core.firstRunnableTest).not.toBeUndefined();
+		expect(myAB.ophan).not.toBeUndefined();
+		expect(myAB.ophan.registerCompleteEvents).not.toBeUndefined();
 	});
 });

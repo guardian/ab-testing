@@ -14,7 +14,8 @@ const DEFAULT_CONFIG = {
 };
 
 export class AB {
-	private ab: ABType | undefined;
+	private _core: ABType['core'];
+	private _ophan: ABType['ophan'];
 
 	constructor(config: ConfigType) {
 		const {
@@ -27,22 +28,24 @@ export class AB {
 			ophanRecord,
 		} = { ...DEFAULT_CONFIG, ...config };
 
-		this.ab = {
-			core: initCore({
-				mvtMaxValue,
-				mvtCookieId,
-				pageIsSensitive,
-				abTestSwitches,
-			}),
-			ophan: initOphan({
-				serverSideTests,
-				errorReporter,
-				ophanRecord,
-			}),
-		};
+		this._core = initCore({
+			mvtMaxValue,
+			mvtCookieId,
+			pageIsSensitive,
+			abTestSwitches,
+		});
+
+		this._ophan = initOphan({
+			serverSideTests,
+			errorReporter,
+			ophanRecord,
+		});
 	}
 
-	get test(): ABType | undefined {
-		return this.ab;
+	get core(): ABType['core'] {
+		return this._core;
+	}
+	get ophan(): ABType['ophan'] {
+		return this._ophan;
 	}
 }
