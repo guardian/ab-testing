@@ -4,11 +4,6 @@ Client-side ab testing framework (broken out from Frontend)
 
 ## API
 
-The AB test libary is split into x modules:
-
--   AB Test Core, for initalisation of the ab test framework
--   AB Test Ophan, for initialisation of Ophan tracking for AB tests
-
 ### Initialise AB Tests
 
 ```ts
@@ -24,8 +19,8 @@ const abTests = intialise(coreConfig, ophanConfig);
 // test being a single AB tests
 // [tests] being an array of ab tests
 abTests.core.runnableTest(test);
-abTests.core.allRunnableTests([tests]);
 abTests.core.firstRunnableTest([tests]);
+abTests.core.isUserInVariant(test, variantId);
 
 // [tests] being an array of *runnable* ab tests
 abTest.ophan.registerCompleteEvents([tests]);
@@ -43,6 +38,7 @@ abTest.ophan.trackABTests([tests]);
 | abTestSwitches      | Record<string, boolean>                              | {'TestOne': true}                | An object containing all of the boolean values of abTestSwitches, in Frontend from page.config.switches.abTests                   |
 | forcedTestVariant   | Optional: { testId: ABTest['id']; variant: Variant } |                                  | In Frontend this might be set by the URL override, but otherwise can be used to force a user into a test and variant at init time |
 | forcedTestException | Optional: ABTest['id']                               |                                  | Can be used to force a user out of a test (in Frontend, again with url override)                                                  |
+| arrayOfTestObjects  | ABTest[]                                             |                                  | Pass all tests definitions into the config                                                                                        |
 
 #### ophanConfig
 

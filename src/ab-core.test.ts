@@ -1,6 +1,7 @@
 import { genAbTest, genVariant } from './fixtures/ab-test';
 import { initCore } from './ab-core';
 
+const DummyTest = genAbTest({ id: 'DummyTest' });
 const initCoreDefaultConfig = {
 	mvtMaxValue: 1000000,
 	mvtCookieId: 1234,
@@ -9,11 +10,12 @@ const initCoreDefaultConfig = {
 		DummyTest: true,
 		DummyTestException: true,
 	},
+	arrayOfTestObjects: [DummyTest],
 };
 
 const abTestLibDefault = initCore(initCoreDefaultConfig);
 
-describe('A/B tests', () => {
+describe('A/B test core', () => {
 	beforeEach(() => {
 		window.location.hash = '';
 	});
@@ -29,7 +31,7 @@ describe('A/B tests', () => {
 		});
 
 		test('should return null for a test which is switched off', () => {
-			const test = genAbTest({ id: 'DummyTest' });
+			const test = genAbTest({ id: 'DummyTest', canRun: false });
 			const rt = abTestLibDefault.runnableTest(test);
 			expect(rt).toBeNull();
 		});
@@ -167,6 +169,64 @@ describe('A/B tests', () => {
 			const testException = genAbTest({ id: 'DummyTestException' });
 			const rtException = abTestLib.runnableTest(testException);
 			expect(rtException).toBeNull();
+		});
+	});
+
+	describe('isUserInVariant', () => {
+		test('Returns correct boolean values when user is in one variant', () => {
+			// The user mvtId is 1234, which puts them into the 'control' bucket
+			// with two variants, as it is an even number
+			expect(
+				abTestLibDefault.isUserInVariant(DummyTest, 'control'),
+			).toBeTruthy();
+			expect(
+				abTestLibDefault.isUserInVariant(DummyTest, 'variant'),
+			).toBeFalsy();
+		});
+
+		test('Returns correct boolean values when user is in the other variant', () => {
+			const DummyTest = genAbTest({
+				id: 'DummyTest',
+			});
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
+				...{ arrayOfTestObjects: [DummyTest], mvtCookieId: 1235 },
+			});
+			// The user mvtId is 1235
+			// so the user should not in the variant bucket
+			expect(abTestLib.isUserInVariant(DummyTest, 'control')).toBeFalsy();
+			expect(
+				abTestLib.isUserInVariant(DummyTest, 'variant'),
+			).toBeTruthy();
+		});
+
+		test('Returns false when user is in no variant', () => {
+			const DummyTest = genAbTest({
+				id: 'DummyTest',
+				audience: 0.1,
+				audienceOffset: 0.9,
+			});
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
+				...{ arrayOfTestObjects: [DummyTest] },
+			});
+			// The user mvtId is 1234, and the test audience is 90-100%
+			// so the user should not be in any variants
+			expect(abTestLib.isUserInVariant(DummyTest, 'control')).toBeFalsy();
+			expect(abTestLib.isUserInVariant(DummyTest, 'variant')).toBeFalsy();
+		});
+
+		test("Returns false when test can't run", () => {
+			const DummyTest = genAbTest({
+				id: 'DummyTest',
+				canRun: false,
+			});
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
+				...{ arrayOfTestObjects: [DummyTest] },
+			});
+			expect(abTestLib.isUserInVariant(DummyTest, 'control')).toBeFalsy();
+			expect(abTestLib.isUserInVariant(DummyTest, 'variant')).toBeFalsy();
 		});
 	});
 });

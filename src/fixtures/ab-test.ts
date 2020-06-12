@@ -41,7 +41,7 @@ export const genAbTest = (genAbConfig: genAbConfig): ABTest => {
 		audience: audience || 1,
 		author: 'n/a',
 		canRun: (): boolean => {
-			if (canRun !== null) return !!canRun;
+			if (canRun !== undefined) return !!canRun;
 			return true;
 		},
 		description: 'n/a',

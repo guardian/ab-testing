@@ -10,6 +10,7 @@ export const initCore = (config: ConfigType): coreAPI => {
 		abTestSwitches,
 		forcedTestVariant,
 		forcedTestException,
+		arrayOfTestObjects,
 	} = config;
 	// We only take account of a variant's canRun function if it's defined.
 	// If it's not, assume the variant can be run.
@@ -31,7 +32,7 @@ export const initCore = (config: ConfigType): coreAPI => {
 		// console.log({
 		// 	expired,
 		// 	pageIsSensitive,
-		// 	shouldShowForSensitive,
+		// 	testShouldShowForSensitive,
 		// 	isTestOn,
 		// 	canTestBeRun,
 		// 	testCanRun: test.canRun(),
@@ -103,9 +104,12 @@ export const initCore = (config: ConfigType): coreAPI => {
 		return null;
 	};
 
-	// please ignore
-	const allRunnableTests: coreAPI['allRunnableTests'] = (tests) =>
+	type AllRunnableTests = (
+		tests: ReadonlyArray<ABTest>,
+	) => ReadonlyArray<Runnable<ABTest>> | [];
+	const allRunnableTests: AllRunnableTests = (tests) =>
 		tests.reduce<Runnable<ABTest>[]>((prev, currentValue) => {
+			// console.log({ currentValue, runnable: runnableTest(currentValue) });
 			// in this pr
 			const rt = runnableTest(currentValue); // i will remove these comments
 			return rt ? [...prev, rt] : prev; // so that this api can be reviewed seperate
@@ -117,9 +121,16 @@ export const initCore = (config: ConfigType): coreAPI => {
 			.map((test: ABTest) => runnableTest(test)) // I will remove these comments
 			.find((rt: Runnable<ABTest> | null) => rt !== null) || null; // so that this API can be reviewed seperate
 
+	const isUserInVariant: coreAPI['isUserInVariant'] = (test, variantId) =>
+		allRunnableTests(arrayOfTestObjects).some(
+			(runnableTest: ABTest & { variantToRun: Variant }) =>
+				runnableTest.id === test.id &&
+				runnableTest.variantToRun.id === variantId,
+		);
+
 	return {
 		runnableTest,
-		allRunnableTests,
 		firstRunnableTest,
+		isUserInVariant,
 	};
 };

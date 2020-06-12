@@ -5,16 +5,17 @@ export type ConfigType = {
 	abTestSwitches: Record<string, boolean>;
 	forcedTestVariant?: { testId: ABTest['id']; variant: Variant };
 	forcedTestException?: ABTest['id'];
+	arrayOfTestObjects: ABTest[];
 };
 
 export type coreAPI = {
-	runnableTest: (test: ABTest) => Runnable<ABTest> | null;
-	allRunnableTests: (
-		tests: ReadonlyArray<ABTest>,
-	) => ReadonlyArray<Runnable<ABTest>> | [];
+	runnableTest: (
+		test: ABTest,
+	) => Runnable<ABTest & { variantToRun: Variant }> | null;
 	firstRunnableTest: (
 		tests: ReadonlyArray<ABTest>,
 	) => Runnable<ABTest> | null;
+	isUserInVariant: (test: ABTest, variantId: Variant['id']) => boolean;
 };
 
 export type OphanAPIConfig = {
