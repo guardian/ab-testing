@@ -32,7 +32,7 @@ export const initCore = (config: ConfigType): coreAPI => {
 		// console.log({
 		// 	expired,
 		// 	pageIsSensitive,
-		// 	shouldShowForSensitive,
+		// 	testShouldShowForSensitive,
 		// 	isTestOn,
 		// 	canTestBeRun,
 		// 	testCanRun: test.canRun(),
@@ -109,6 +109,7 @@ export const initCore = (config: ConfigType): coreAPI => {
 	) => ReadonlyArray<Runnable<ABTest>> | [];
 	const allRunnableTests: AllRunnableTests = (tests) =>
 		tests.reduce<Runnable<ABTest>[]>((prev, currentValue) => {
+			// console.log({ currentValue, runnable: runnableTest(currentValue) });
 			// in this pr
 			const rt = runnableTest(currentValue); // i will remove these comments
 			return rt ? [...prev, rt] : prev; // so that this api can be reviewed seperate
@@ -123,6 +124,7 @@ export const initCore = (config: ConfigType): coreAPI => {
 	const isUserInVariant: coreAPI['isUserInVariant'] = (test, variantId) =>
 		allRunnableTests(arrayOfTestObjects).some(
 			(runnableTest: ABTest & { variantToRun: Variant }) => {
+				// console.log(runnableTest);
 				return (
 					runnableTest.id === test.id &&
 					runnableTest.variantToRun.id === variantId
