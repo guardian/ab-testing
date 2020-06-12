@@ -8,12 +8,9 @@ export type ConfigType = {
 	arrayOfTestObjects: ABTest[];
 };
 
-export type ABType = {
-	core: coreAPI;
-	ophan: OphanAPI;
-};
+export type ABType = CoreAPI & OphanAPI;
 
-export type coreAPI = {
+export type CoreAPI = {
 	runnableTest: (
 		test: ABTest,
 	) => Runnable<ABTest & { variantToRun: Variant }> | null;

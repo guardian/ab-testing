@@ -1,8 +1,8 @@
-import { ABTest, Variant, Runnable, ConfigType, coreAPI } from './types';
+import { ABTest, Variant, Runnable, ConfigType, CoreAPI } from './types';
 // import { getVariantFromLocalStorage } from './ab-local-storage'; // Deprecating from localstorage
 import { isExpired } from './lib/time-utils';
 
-export const initCore = (config: ConfigType): coreAPI => {
+export const initCore = (config: ConfigType): CoreAPI => {
 	const {
 		mvtMaxValue,
 		mvtCookieId,
@@ -73,7 +73,7 @@ export const initCore = (config: ConfigType): coreAPI => {
 	// actually has a variant which could run on this pageview.
 	//
 	// This function can be called at any time, it should always give the same result for a given pageview.
-	const runnableTest: coreAPI['runnableTest'] = (test) => {
+	const runnableTest: CoreAPI['runnableTest'] = (test) => {
 		// const fromLocalStorage = getVariantFromLocalStorage(test); // We're deprecating accessing localstorage
 		const fromCookie = computeVariantFromMvtCookie(test);
 		const fromForcedTest =
@@ -116,12 +116,12 @@ export const initCore = (config: ConfigType): coreAPI => {
 		}, []); // ta
 
 	// Please ignore
-	const firstRunnableTest: coreAPI['firstRunnableTest'] = (tests) =>
+	const firstRunnableTest: CoreAPI['firstRunnableTest'] = (tests) =>
 		tests // in this pr
 			.map((test: ABTest) => runnableTest(test)) // I will remove these comments
 			.find((rt: Runnable<ABTest> | null) => rt !== null) || null; // so that this API can be reviewed seperate
 
-	const isUserInVariant: coreAPI['isUserInVariant'] = (test, variantId) =>
+	const isUserInVariant: CoreAPI['isUserInVariant'] = (test, variantId) =>
 		allRunnableTests(arrayOfTestObjects).some(
 			(runnableTest: ABTest & { variantToRun: Variant }) =>
 				runnableTest.id === test.id &&
