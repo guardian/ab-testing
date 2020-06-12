@@ -9,9 +9,6 @@ export type ConfigType = {
 };
 
 export type coreAPI = {
-	allRunnableTests: (
-		tests: ReadonlyArray<ABTest>,
-	) => ReadonlyArray<Runnable<ABTest>> | [];
 	runnableTest: (
 		test: ABTest,
 	) => Runnable<ABTest & { variantToRun: Variant }> | null;

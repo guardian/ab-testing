@@ -104,8 +104,10 @@ export const initCore = (config: ConfigType): coreAPI => {
 		return null;
 	};
 
-	// please ignore
-	const allRunnableTests: coreAPI['allRunnableTests'] = (tests) =>
+	type AllRunnableTests = (
+		tests: ReadonlyArray<ABTest>,
+	) => ReadonlyArray<Runnable<ABTest>> | [];
+	const allRunnableTests: AllRunnableTests = (tests) =>
 		tests.reduce<Runnable<ABTest>[]>((prev, currentValue) => {
 			// in this pr
 			const rt = runnableTest(currentValue); // i will remove these comments
@@ -130,7 +132,6 @@ export const initCore = (config: ConfigType): coreAPI => {
 
 	return {
 		runnableTest,
-		allRunnableTests,
 		firstRunnableTest,
 		isUserInVariant,
 	};
