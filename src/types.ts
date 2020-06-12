@@ -8,6 +8,11 @@ export type ConfigType = {
 	arrayOfTestObjects: ABTest[];
 };
 
+export type ABType = {
+	core: coreAPI;
+	ophan: OphanAPI;
+};
+
 export type coreAPI = {
 	runnableTest: (
 		test: ABTest,

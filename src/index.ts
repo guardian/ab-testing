@@ -1,3 +1,3 @@
-import { initialise } from './initialise';
+import { AB } from './ab';
 
-export { initialise };
+export { AB };
