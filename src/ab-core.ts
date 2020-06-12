@@ -10,6 +10,7 @@ export const initCore = (config: ConfigType): coreAPI => {
 		abTestSwitches,
 		forcedTestVariant,
 		forcedTestException,
+		arrayOfTestObjects,
 	} = config;
 	// We only take account of a variant's canRun function if it's defined.
 	// If it's not, assume the variant can be run.
@@ -117,9 +118,20 @@ export const initCore = (config: ConfigType): coreAPI => {
 			.map((test: ABTest) => runnableTest(test)) // I will remove these comments
 			.find((rt: Runnable<ABTest> | null) => rt !== null) || null; // so that this API can be reviewed seperate
 
+	const isUserInVariant: coreAPI['isUserInVariant'] = (test, variantId) =>
+		allRunnableTests(arrayOfTestObjects).some(
+			(runnableTest: ABTest & { variantToRun: Variant }) => {
+				return (
+					runnableTest.id === test.id &&
+					runnableTest.variantToRun.id === variantId
+				);
+			},
+		);
+
 	return {
 		runnableTest,
 		allRunnableTests,
 		firstRunnableTest,
+		isUserInVariant,
 	};
 };
