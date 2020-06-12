@@ -16,11 +16,7 @@ const DEFAULT_CONFIG = {
 export class AB {
 	private ab: ABType | undefined;
 
-	get test(): ABType | undefined {
-		return this.ab;
-	}
-
-	init(config: ConfigType): void {
+	constructor(config: ConfigType) {
 		const {
 			mvtMaxValue,
 			mvtCookieId,
@@ -44,5 +40,9 @@ export class AB {
 				ophanRecord,
 			}),
 		};
+	}
+
+	get test(): ABType | undefined {
+		return this.ab;
 	}
 }
