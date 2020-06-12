@@ -9,6 +9,7 @@ const DEFAULT_CONFIG = {
 	serverSideTests: {},
 	errorReporter: () => null,
 	ophanRecord: () => null,
+	arrayOfTestObjects: [],
 };
 
 describe('A/B Initalisation', () => {

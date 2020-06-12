@@ -11,6 +11,7 @@ const DEFAULT_CONFIG = {
 	serverSideTests: {},
 	errorReporter: () => null,
 	ophanRecord: () => null,
+	arrayOfTestObjects: [],
 };
 
 export class AB {
@@ -26,6 +27,7 @@ export class AB {
 			serverSideTests,
 			errorReporter,
 			ophanRecord,
+			arrayOfTestObjects,
 		} = { ...DEFAULT_CONFIG, ...config };
 
 		this._core = initCore({
@@ -33,6 +35,7 @@ export class AB {
 			mvtCookieId,
 			pageIsSensitive,
 			abTestSwitches,
+			arrayOfTestObjects,
 		});
 
 		this._ophan = initOphan({
