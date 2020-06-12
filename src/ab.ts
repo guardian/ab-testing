@@ -1,4 +1,4 @@
-import { ConfigType, ABType } from './types';
+import { ConfigType, OphanAPI, CoreAPI } from './types';
 
 import { initCore } from './ab-core';
 import { initOphan } from './ab-ophan';
@@ -15,9 +15,13 @@ const DEFAULT_CONFIG = {
 };
 
 export class AB {
-	private _core: ABType['core'];
-	private _ophan: ABType['ophan'];
+	private _isUserInVariant: CoreAPI['isUserInVariant'];
+	private _firstRunnableTest: CoreAPI['firstRunnableTest'];
+	private _runnableTest: CoreAPI['runnableTest'];
 
+	private _registerCompleteEvents: OphanAPI['registerCompleteEvents'];
+	private _registerImpressionEvents: OphanAPI['registerImpressionEvents'];
+	private _trackABTests: OphanAPI['trackABTests'];
 	constructor(config: ConfigType) {
 		const {
 			mvtMaxValue,
@@ -30,7 +34,7 @@ export class AB {
 			arrayOfTestObjects,
 		} = { ...DEFAULT_CONFIG, ...config };
 
-		this._core = initCore({
+		const core = initCore({
 			mvtMaxValue,
 			mvtCookieId,
 			pageIsSensitive,
@@ -38,17 +42,41 @@ export class AB {
 			arrayOfTestObjects,
 		});
 
-		this._ophan = initOphan({
+		const ophan = initOphan({
 			serverSideTests,
 			errorReporter,
 			ophanRecord,
 		});
+
+		this._firstRunnableTest = core.firstRunnableTest;
+		this._runnableTest = core.runnableTest;
+		this._isUserInVariant = core.isUserInVariant;
+
+		this._registerCompleteEvents = ophan.registerCompleteEvents;
+		this._registerImpressionEvents = ophan.registerImpressionEvents;
+		this._trackABTests = ophan.trackABTests;
 	}
 
-	get core(): ABType['core'] {
-		return this._core;
+	// CoreAPI
+	get firstRunnableTest(): CoreAPI['firstRunnableTest'] {
+		return this._firstRunnableTest;
 	}
-	get ophan(): ABType['ophan'] {
-		return this._ophan;
+	get runnableTest(): CoreAPI['runnableTest'] {
+		return this._runnableTest;
+	}
+	get isUserInVariant(): CoreAPI['isUserInVariant'] {
+		return this._isUserInVariant;
+	}
+
+	// OphanAPI
+
+	get registerCompleteEvents(): OphanAPI['registerCompleteEvents'] {
+		return this._registerCompleteEvents;
+	}
+	get registerImpressionEvents(): OphanAPI['registerImpressionEvents'] {
+		return this._registerImpressionEvents;
+	}
+	get trackABTests(): OphanAPI['trackABTests'] {
+		return this._trackABTests;
 	}
 }
