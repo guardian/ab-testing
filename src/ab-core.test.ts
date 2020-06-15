@@ -202,6 +202,22 @@ describe('A/B test core', () => {
 			).toBeTruthy();
 		});
 
+		test('Returns correct boolean values when default is used', () => {
+			const DummyTest = genAbTest({
+				id: 'DummyTest',
+			});
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
+				...{ arrayOfTestObjects: [DummyTest], mvtCookieId: 1235 },
+			});
+			// The user mvtId is 1235
+			// so the user should not in the variant bucket
+			expect(
+				abTestLib.isUserInVariant(DummyTest.id, 'control'),
+			).toBeFalsy();
+			expect(abTestLib.isUserInVariant(DummyTest.id)).toBeTruthy();
+		});
+
 		test('Returns false when user is in no variant', () => {
 			const DummyTest = genAbTest({
 				id: 'DummyTest',

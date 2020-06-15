@@ -121,7 +121,10 @@ export const initCore = (config: ConfigType): CoreAPI => {
 			.map((test: ABTest) => runnableTest(test)) // I will remove these comments
 			.find((rt: Runnable<ABTest> | null) => rt !== null) || null; // so that this API can be reviewed seperate
 
-	const isUserInVariant: CoreAPI['isUserInVariant'] = (testId, variantId) =>
+	const isUserInVariant: CoreAPI['isUserInVariant'] = (
+		testId,
+		variantId = 'variant',
+	) =>
 		allRunnableTests(arrayOfTestObjects).some(
 			(runnableTest: ABTest & { variantToRun: Variant }) =>
 				runnableTest.id === testId &&
