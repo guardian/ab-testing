@@ -17,7 +17,10 @@ export type CoreAPI = {
 	firstRunnableTest: (
 		tests: ReadonlyArray<ABTest>,
 	) => Runnable<ABTest> | null;
-	isUserInVariant: (test: ABTest, variantId: Variant['id']) => boolean;
+	isUserInVariant: (
+		testId: ABTest['id'],
+		variantId?: Variant['id'],
+	) => boolean;
 };
 
 export type OphanAPIConfig = {
