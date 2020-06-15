@@ -177,10 +177,10 @@ describe('A/B test core', () => {
 			// The user mvtId is 1234, which puts them into the 'control' bucket
 			// with two variants, as it is an even number
 			expect(
-				abTestLibDefault.isUserInVariant(DummyTest, 'control'),
+				abTestLibDefault.isUserInVariant(DummyTest.id, 'control'),
 			).toBeTruthy();
 			expect(
-				abTestLibDefault.isUserInVariant(DummyTest, 'variant'),
+				abTestLibDefault.isUserInVariant(DummyTest.id, 'variant'),
 			).toBeFalsy();
 		});
 
@@ -194,9 +194,11 @@ describe('A/B test core', () => {
 			});
 			// The user mvtId is 1235
 			// so the user should not in the variant bucket
-			expect(abTestLib.isUserInVariant(DummyTest, 'control')).toBeFalsy();
 			expect(
-				abTestLib.isUserInVariant(DummyTest, 'variant'),
+				abTestLib.isUserInVariant(DummyTest.id, 'control'),
+			).toBeFalsy();
+			expect(
+				abTestLib.isUserInVariant(DummyTest.id, 'variant'),
 			).toBeTruthy();
 		});
 
@@ -212,8 +214,12 @@ describe('A/B test core', () => {
 			});
 			// The user mvtId is 1234, and the test audience is 90-100%
 			// so the user should not be in any variants
-			expect(abTestLib.isUserInVariant(DummyTest, 'control')).toBeFalsy();
-			expect(abTestLib.isUserInVariant(DummyTest, 'variant')).toBeFalsy();
+			expect(
+				abTestLib.isUserInVariant(DummyTest.id, 'control'),
+			).toBeFalsy();
+			expect(
+				abTestLib.isUserInVariant(DummyTest.id, 'variant'),
+			).toBeFalsy();
 		});
 
 		test("Returns false when test can't run", () => {
@@ -225,8 +231,12 @@ describe('A/B test core', () => {
 				...initCoreDefaultConfig,
 				...{ arrayOfTestObjects: [DummyTest] },
 			});
-			expect(abTestLib.isUserInVariant(DummyTest, 'control')).toBeFalsy();
-			expect(abTestLib.isUserInVariant(DummyTest, 'variant')).toBeFalsy();
+			expect(
+				abTestLib.isUserInVariant(DummyTest.id, 'control'),
+			).toBeFalsy();
+			expect(
+				abTestLib.isUserInVariant(DummyTest.id, 'variant'),
+			).toBeFalsy();
 		});
 	});
 });
