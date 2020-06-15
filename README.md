@@ -7,25 +7,25 @@ Client-side ab testing framework (broken out from Frontend)
 ### Initialise AB Tests
 
 ```ts
-import { initalise } from '@guardian/ab-rendering';
+import { AB } from '@guardian/ab-rendering';
 
 // See config object values below
 const coreConfig = {};
 const ophanConfig = {};
 
-const abTests = intialise(coreConfig, ophanConfig);
+const abTests = new AB(config);
 
 // Provides access to:
 // test being a single AB tests
 // [tests] being an array of ab tests
-abTests.core.runnableTest(test);
-abTests.core.firstRunnableTest([tests]);
-abTests.core.isUserInVariant(test, variantId);
+abTests.runnableTest(test);
+abTests.firstRunnableTest([tests]);
+abTests.isUserInVariant(test, variantId);
 
 // [tests] being an array of *runnable* ab tests
-abTest.ophan.registerCompleteEvents([tests]);
-abTest.ophan.registerImpressionEvents([tests]);
-abTest.ophan.trackABTests([tests]);
+abTest.registerCompleteEvents([tests]);
+abTest.registerImpressionEvents([tests]);
+abTest.trackABTests([tests]);
 ```
 
 #### coreConfig
@@ -39,14 +39,9 @@ abTest.ophan.trackABTests([tests]);
 | forcedTestVariant   | Optional: { testId: ABTest['id']; variant: Variant } |                                  | In Frontend this might be set by the URL override, but otherwise can be used to force a user into a test and variant at init time |
 | forcedTestException | Optional: ABTest['id']                               |                                  | Can be used to force a user out of a test (in Frontend, again with url override)                                                  |
 | arrayOfTestObjects  | ABTest[]                                             |                                  | Pass all tests definitions into the config                                                                                        |
-
-#### ophanConfig
-
-| Config         | Type                | Example | Note                                                      |
-| -------------- | ------------------- | ------- | --------------------------------------------------------- |
-| ServerSideTets | ServerSideTests     |         | ServerSideTets are accessed via window config in Frontend |
-| errorReporter  | ErrorReporterFunc   |         | Pass an error reporter, probably Sentry                   |
-| ophanRecord    | OphanRecordFunction |         | Probably Ophan's 'record' function                        |
+| ServerSideTets      | ServerSideTests                                      |                                  | ServerSideTets are accessed via window config in Frontend                                                                         |
+| errorReporter       | ErrorReporterFunc                                    |                                  | Pass an error reporter, probably Sentry                                                                                           |
+| ophanRecord         | OphanRecordFunction                                  |                                  | Probably Ophan's 'record' function                                                                                                |
 
 ## TODO
 
