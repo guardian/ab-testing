@@ -1,5 +1,5 @@
 import { genAbTest, genVariant } from './fixtures/ab-test';
-import { initCore } from './ab-core';
+import { initCore } from './core';
 
 const DummyTest = genAbTest({ id: 'DummyTest' });
 const initCoreDefaultConfig = {
