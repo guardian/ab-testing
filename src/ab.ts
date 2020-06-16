@@ -5,7 +5,7 @@ import { initOphan } from './ophan';
 
 const DEFAULT_CONFIG = {
 	mvtMaxValue: 1000000,
-	mvtCookieId: 1234,
+	mvtId: 1234,
 	pageIsSensitive: false,
 	abTestSwitches: {},
 	serverSideTests: {},
@@ -25,7 +25,7 @@ export class AB {
 	constructor(config: ConfigType) {
 		const {
 			mvtMaxValue,
-			mvtCookieId,
+			mvtId,
 			pageIsSensitive,
 			abTestSwitches,
 			serverSideTests,
@@ -36,7 +36,7 @@ export class AB {
 
 		const core = initCore({
 			mvtMaxValue,
-			mvtCookieId,
+			mvtId,
 			pageIsSensitive,
 			abTestSwitches,
 			arrayOfTestObjects,

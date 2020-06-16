@@ -4,7 +4,7 @@ import { initCore } from './core';
 const DummyTest = genAbTest({ id: 'DummyTest' });
 const initCoreDefaultConfig = {
 	mvtMaxValue: 1000000,
-	mvtCookieId: 1234,
+	mvtId: 1234,
 	pageIsSensitive: false,
 	abTestSwitches: {
 		DummyTest: true,
@@ -64,7 +64,7 @@ describe('A/B test core', () => {
 			const abTestLib = initCore({
 				...initCoreDefaultConfig,
 				...{
-					mvtCookieId: 600000,
+					mvtId: 600000,
 				},
 			});
 			const test = genAbTest({
@@ -138,7 +138,7 @@ describe('A/B test core', () => {
 			const abTestLib = initCore({
 				...initCoreDefaultConfig,
 				...{
-					mvtCookieId: 1245,
+					mvtId: 1245,
 				},
 			});
 			const test = genAbTest({
@@ -190,7 +190,7 @@ describe('A/B test core', () => {
 			});
 			const abTestLib = initCore({
 				...initCoreDefaultConfig,
-				...{ arrayOfTestObjects: [DummyTest], mvtCookieId: 1235 },
+				...{ arrayOfTestObjects: [DummyTest], mvtId: 1235 },
 			});
 			// The user mvtId is 1235
 			// so the user should not in the variant bucket

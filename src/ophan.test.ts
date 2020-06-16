@@ -7,7 +7,7 @@ import { OphanRecordFunction } from './types';
 
 export const initABCoreDefaultConfig = {
 	mvtMaxValue: 1000000,
-	mvtCookieId: 1234,
+	mvtId: 1234,
 	pageIsSensitive: false,
 	abTestSwitches: {
 		DummyTest: true,

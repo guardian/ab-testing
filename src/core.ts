@@ -5,7 +5,7 @@ import { isExpired } from './lib/time-utils';
 export const initCore = (config: ConfigType): CoreAPI => {
 	const {
 		mvtMaxValue,
-		mvtCookieId,
+		mvtId,
 		pageIsSensitive,
 		abTestSwitches,
 		forcedTestVariant,
@@ -55,16 +55,12 @@ export const initCore = (config: ConfigType): CoreAPI => {
 		const smallestTestId = mvtMaxValue * test.audienceOffset;
 		const largestTestId = smallestTestId + mvtMaxValue * test.audience;
 
-		if (
-			mvtCookieId &&
-			mvtCookieId > smallestTestId &&
-			mvtCookieId <= largestTestId
-		) {
+		if (mvtId && mvtId > smallestTestId && mvtId <= largestTestId) {
 			// This mvt test id is in the test range, so allocate it to a test variant.
-			return test.variants[mvtCookieId % test.variants.length];
+			return test.variants[mvtId % test.variants.length];
 		}
 
-		// We return null if there is no variant that matches the test and variant fot the mvtCookieId
+		// We return null if there is no variant that matches the test and variant fot the mvtId
 		return null;
 	};
 
