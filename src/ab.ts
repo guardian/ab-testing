@@ -1,7 +1,7 @@
 import { ConfigType, OphanAPI, CoreAPI } from './types';
 
-import { initCore } from './ab-core';
-import { initOphan } from './ab-ophan';
+import { initCore } from './core';
+import { initOphan } from './ophan';
 
 const DEFAULT_CONFIG = {
 	mvtMaxValue: 1000000,
