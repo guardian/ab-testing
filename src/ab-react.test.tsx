@@ -2,16 +2,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-// Used to mock getCookie
-import { getCookie as getCookie_ } from './lib/cookie';
-
 import { useAB, ABProvider } from './ab-react';
-
-const getCookie: any = getCookie_;
-
-jest.mock('./lib/cookie', () => ({
-	getCookie: jest.fn(),
-}));
 
 const DummyTest = {
 	id: 'DummyTest',
@@ -34,16 +25,11 @@ const DummyTest = {
 
 const Example = () => {
 	const AB = useAB();
-	if (AB === null) return <p>IhaveNoMvtCookie</p>;
 	if (AB.isUserInVariant('DummyTest', 'variant')) return <p>InTheTest</p>;
 	return <p>NotInTest</p>;
 };
 
 describe('AB', () => {
-	beforeEach(() => {
-		getCookie.mockReset();
-	});
-
 	it('throws an error if you try to use AB outside of a provider', () => {
 		// We disable console.error for this test to keep our jest output clean
 
@@ -60,27 +46,12 @@ describe('AB', () => {
 		console.error = originalError;
 	});
 
-	it('returns null if no mvt cookie was set', () => {
+	it('puts a user in the test bucket when test is valid and mvtId value is in scope', () => {
 		render(
 			<ABProvider
 				tests={[DummyTest]}
 				switches={{ DummyTest: true }}
-				isSensitive={false}
-			>
-				<Example />
-			</ABProvider>,
-		);
-
-		expect(screen.getByText('IhaveNoMvtCookie')).toBeTruthy();
-	});
-
-	it('puts a user in the test bucket when test is valid and cookie value is in scope', () => {
-		getCookie.mockReturnValue('19');
-
-		render(
-			<ABProvider
-				tests={[DummyTest]}
-				switches={{ DummyTest: true }}
+				mvtId={19}
 				isSensitive={false}
 			>
 				<Example />
@@ -90,13 +61,12 @@ describe('AB', () => {
 		expect(screen.getByText('InTheTest')).toBeTruthy();
 	});
 
-	it('does not put user in bucket when cookie out of scope', () => {
-		getCookie.mockReturnValue('20');
-
+	it('does not put user in bucket when mvtId out of scope', () => {
 		render(
 			<ABProvider
 				tests={[DummyTest]}
 				switches={{ DummyTest: true }}
+				mvtId={20}
 				isSensitive={false}
 			>
 				<Example />
@@ -107,12 +77,11 @@ describe('AB', () => {
 	});
 
 	it('does not put user in bucket when test is turned off with a switch', () => {
-		getCookie.mockReturnValue('19');
-
 		render(
 			<ABProvider
 				tests={[DummyTest]}
 				switches={{ DummyTest: false }}
+				mvtId={19}
 				isSensitive={false}
 			>
 				<Example />
@@ -123,12 +92,11 @@ describe('AB', () => {
 	});
 
 	it('does not put user in bucket when isSensitive is true', () => {
-		getCookie.mockReturnValue('19');
-
 		render(
 			<ABProvider
 				tests={[DummyTest]}
 				switches={{ DummyTest: true }}
+				mvtId={19}
 				isSensitive={true}
 			>
 				<Example />
@@ -139,12 +107,11 @@ describe('AB', () => {
 	});
 
 	it('does not put user in bucket when test is expired', () => {
-		getCookie.mockReturnValue('19');
-
 		render(
 			<ABProvider
 				tests={[{ ...DummyTest, expiry: '2001-01-01' }]}
 				switches={{ DummyTest: true }}
+				mvtId={19}
 				isSensitive={false}
 			>
 				<Example />

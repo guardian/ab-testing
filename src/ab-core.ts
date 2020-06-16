@@ -47,7 +47,7 @@ export const initCore = (config: ConfigType): CoreAPI => {
 	};
 
 	// Determine whether the user is in the test or not and return the associated
-	// variant ID, based on the MVT cookie segmentation.
+	// variant ID, based on the MVT id segmentation.
 	//
 	// The test population is just a subset of MVT ids. A test population must
 	// begin from a specific value. Overlapping test ranges are permitted.

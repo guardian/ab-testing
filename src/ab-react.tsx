@@ -4,8 +4,6 @@ import React from 'react';
 import { AB as ABConstructor } from './ab';
 import { ABTest, CoreAPI } from './types';
 
-import { getCookie } from './lib/cookie';
-
 /**
  * Usage
  *
@@ -13,7 +11,6 @@ import { getCookie } from './lib/cookie';
  *
  * const Example = () => {
  *   const AB = useAB();
- *   if (AB === null) return <p>IhaveNoMvtCookie</p>;
  *   if (AB.isUserInVariant('DummyTest', 'variant')) return <p>InTheTest</p>;
  *   return <p>NotInTest</p>;
  * };
@@ -28,56 +25,44 @@ import { getCookie } from './lib/cookie';
 /**
  * ABContext is the global context container for the AB object
  *
- * undefined = Not yet defined, pending cookie read
- * null = No cookie or cookie value invalid
  * CoreAPI = Is the AB API as exported from ab-rendering
  */
-const ABContext = React.createContext<CoreAPI | undefined | null>(undefined);
+const ABContext = React.createContext<CoreAPI | undefined>(undefined);
 
 /**
  * ABProvider sets an instance of ABContext
  *
- * Each instance of AB reads the cookie and has its own config. For DCR, you probably
- * only need one instance but wrapping the whole App has the disadvantage of blocking
- * on cookie read. An alternative could be to wrap sections or individual components in
- * their own ABProviders
+ * Each instance of AB has its own config.
  */
 export const ABProvider = ({
 	tests,
 	switches,
 	isSensitive,
 	mvtMax = 1000000,
+	mvtId,
 	children,
 }: {
 	tests: ABTest[];
 	switches: { [key: string]: boolean };
 	isSensitive: boolean;
 	mvtMax?: number;
+	mvtId: number;
 	children: React.ReactNode;
-}) => {
-	const mvtCookie = getCookie('GU_mvt_id');
-	const mvtId = mvtCookie && parseInt(mvtCookie, 10);
-
-	return (
-		<ABContext.Provider
-			value={
-				// If mvtId is not a number it was either invalid or no cookie
-				// was found. In which case, we set AB to null
-				typeof mvtId === 'number'
-					? new ABConstructor({
-							mvtCookieId: mvtId,
-							mvtMaxValue: mvtMax,
-							pageIsSensitive: isSensitive,
-							abTestSwitches: switches,
-							arrayOfTestObjects: tests,
-					  })
-					: null
-			}
-		>
-			{children}
-		</ABContext.Provider>
-	);
-};
+}) => (
+	<ABContext.Provider
+		value={
+			new ABConstructor({
+				mvtCookieId: mvtId,
+				mvtMaxValue: mvtMax,
+				pageIsSensitive: isSensitive,
+				abTestSwitches: switches,
+				arrayOfTestObjects: tests,
+			})
+		}
+	>
+		{children}
+	</ABContext.Provider>
+);
 
 /**
  * useAB is a wrapper around React.useContext(ABContext) to provide a
@@ -85,7 +70,7 @@ export const ABProvider = ({
  * message if not
  */
 export const useAB = () => {
-	const context = React.useContext<CoreAPI | null | undefined>(ABContext);
+	const context = React.useContext<CoreAPI | undefined>(ABContext);
 	if (context === undefined) {
 		throw new Error('useAB must be used within the ABProvider');
 	}

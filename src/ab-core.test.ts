@@ -93,7 +93,7 @@ describe('A/B test core', () => {
 			}
 		});
 
-		test('should return the variantToRun specified by the cookie, if the test is not the runnableTest param', () => {
+		test('should return the variantToRun specified by the mvtId, if the test is not the runnableTest param', () => {
 			const abTestLib = initCore({
 				...initCoreDefaultConfig,
 				...{
@@ -118,7 +118,7 @@ describe('A/B test core', () => {
 			}
 		});
 
-		test('should return the variantToRun specified by the cookie, if forced variant is absent (odd cookie)', () => {
+		test('should return the variantToRun specified by the mvtId, if forced variant is absent (odd mvtId)', () => {
 			const test = genAbTest({
 				id: 'DummyTest',
 				canRun: true,
@@ -134,7 +134,7 @@ describe('A/B test core', () => {
 			}
 		});
 
-		test('should return the variantToRun specified by the cookie, if forced variant is absent (even cookie)', () => {
+		test('should return the variantToRun specified by the mvtId, if forced variant is absent (even mvtId)', () => {
 			const abTestLib = initCore({
 				...initCoreDefaultConfig,
 				...{
