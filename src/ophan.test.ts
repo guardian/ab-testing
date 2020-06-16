@@ -1,4 +1,4 @@
-import { initOphan } from './ab-ophan';
+import { initOphan } from './ophan';
 import {
 	genRunnableAbTestWhereControlIsRunnable,
 	genVariant,
