@@ -22,6 +22,7 @@ export class AB {
 	private _registerCompleteEvents: OphanAPI['registerCompleteEvents'];
 	private _registerImpressionEvents: OphanAPI['registerImpressionEvents'];
 	private _trackABTests: OphanAPI['trackABTests'];
+
 	constructor(config: ConfigType) {
 		const {
 			mvtMaxValue,
@@ -69,7 +70,6 @@ export class AB {
 	}
 
 	// OphanAPI
-
 	get registerCompleteEvents(): OphanAPI['registerCompleteEvents'] {
 		return this._registerCompleteEvents;
 	}
