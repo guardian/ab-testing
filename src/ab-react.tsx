@@ -32,9 +32,7 @@ import { getCookie } from './lib/cookie';
  * null = No cookie or cookie value invalid
  * CoreAPI = Is the AB API as exported from ab-rendering
  */
-export const ABContext = React.createContext<CoreAPI | undefined | null>(
-	undefined,
-);
+const ABContext = React.createContext<CoreAPI | undefined | null>(undefined);
 
 /**
  * ABProvider sets an instance of ABContext
