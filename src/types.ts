@@ -1,6 +1,6 @@
 export type ConfigType = {
 	mvtMaxValue: number;
-	mvtCookieId: number;
+	mvtId: number;
 	pageIsSensitive: boolean;
 	abTestSwitches: Record<string, boolean>;
 	forcedTestVariant?: { testId: ABTest['id']; variant: Variant };

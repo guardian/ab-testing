@@ -3,7 +3,7 @@ import { ABType } from './types';
 
 const DEFAULT_CONFIG = {
 	mvtMaxValue: 1000000,
-	mvtCookieId: 1234,
+	mvtId: 1234,
 	pageIsSensitive: false,
 	abTestSwitches: {},
 	serverSideTests: {},
