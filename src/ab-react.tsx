@@ -85,8 +85,7 @@ export const ABProvider = ({
  * message if not
  */
 export const useAB = () => {
-	const context = React.useContext(ABContext);
-	console.log('useAB context', context);
+	const context = React.useContext<CoreAPI | null | undefined>(ABContext);
 	if (context === undefined) {
 		throw new Error('useAB must be used within the ABProvider');
 	}
