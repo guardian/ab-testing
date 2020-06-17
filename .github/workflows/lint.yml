@@ -9,5 +9,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: "10.x"
-      - run: lerna bootstrap
-      - run: lerna run lint
+      - run: yarn
+      - run: yarn lerna bootstrap
+      - run: CI=true yarn lerna run lint --parallel
