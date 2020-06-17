@@ -9,5 +9,5 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: "10.x"  
-      - run: lerna bootstrap
-      - run: CI=true lerna run test
+      - run: yarn lerna bootstrap
+      - run: CI=true yarn lerna run test
