@@ -1,5 +1,5 @@
 {
-	"version": "1.0.0",
+	"version": "0.1.1-alpha.19+fb543e4",
 	"name": "@guardian/ab-core",
 	"author": "The Guardian",
 	"license": "Apache-2.0",
@@ -21,7 +21,8 @@
 		"lint": "eslint . --ext .ts",
 		"build": "microbundle --jsx React.createElement",
 		"dev": "microbundle watch --jsx React.createElement",
-		"validate": "yarn lint && yarn tsc && yarn test"
+		"validate": "yarn lint && yarn tsc && yarn test",
+		"prepublishOnly": "yarn build"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.9.6",
@@ -87,5 +88,6 @@
 	"peerDependencies": {
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1"
-	}
+	},
+	"gitHead": "fb543e421016e8a72a8050066e2f97c096861efc"
 }
