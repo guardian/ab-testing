@@ -1,7 +1,6 @@
 {
-	"version": "0.2.0",
-	"name": "@guardian/ab-rendering",
-	"repository": "https://github.com/guardian/ab-tests.git",
+	"version": "1.0.0",
+	"name": "@guardian/ab-core",
 	"author": "The Guardian",
 	"license": "Apache-2.0",
 	"publishConfig": {
