@@ -73,7 +73,9 @@ export const initCore = (config: ConfigType): CoreAPI => {
 		// const fromLocalStorage = getVariantFromLocalStorage(test); // We're deprecating accessing localstorage
 		const fromCookie = computeVariantFromMvtCookie(test);
 		const fromForcedTest =
-			forcedTestVariant?.testId === test.id && forcedTestVariant.variant;
+			forcedTestVariant &&
+			forcedTestVariant.testId === test.id &&
+			forcedTestVariant.variant;
 		const forcedOutOfTest = forcedTestException === test.id;
 		const variantToRun = fromForcedTest || fromCookie;
 
