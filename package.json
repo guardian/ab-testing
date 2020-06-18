@@ -1,17 +1,14 @@
 {
-  "private": true,
-  "devDependencies": {
-    "lerna": "^3.8.0",
-    "pretty-quick": "^2.0.1"
-  },
-  "scripts": {},
-  "dependencies": {
-    "husky": "^4.2.5",
-    "prettier": "^2.0.5"
-  },
-  "husky": {
-    "hooks": {
-      "pre-push": "pretty-quick --staged && lerna run lint && lerna run tsc && lerna run test"
-    }
-  }
+	"private": true,
+	"devDependencies": {
+		"lerna": "^3.8.0",
+		"pretty-quick": "^2.0.1",
+		"husky": "^4.2.5",
+		"prettier": "^2.0.5"
+	},
+	"husky": {
+		"hooks": {
+			"pre-push": "pretty-quick --staged && lerna run lint && lerna run tsc && lerna run test"
+		}
+	}
 }
