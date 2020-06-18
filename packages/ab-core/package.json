@@ -47,7 +47,6 @@
 		"jest-environment-jsdom-sixteen": "^1.0.3",
 		"lerna": "^3.22.1",
 		"microbundle": "^0.12.0-next.9",
-		"prettier": "^2.0.5",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
 		"ts-jest": "^26.1.0"
