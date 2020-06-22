@@ -2,13 +2,12 @@ name: 🔎
 on: [push]
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: "10.x"
-      - run: yarn
-      - run: yarn lerna bootstrap
-      - run: CI=true yarn lerna run lint --parallel
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: '10.x'
+            - run: yarn
+            - run: CI=true yarn lerna run lint --parallel
