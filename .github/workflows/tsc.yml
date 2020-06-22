@@ -10,4 +10,5 @@ jobs:
         with:
           node-version: "10.x"
       - run: yarn
-      - run: yarn tsc
+      - run: yarn lerna bootstrap
+      - run: CI=true yarn lerna run tsc --parallel
