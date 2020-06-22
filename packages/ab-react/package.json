@@ -1,5 +1,5 @@
 {
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"name": "@guardian/ab-react",
 	"author": "The Guardian",
 	"license": "Apache-2.0",
@@ -89,6 +89,6 @@
 		"react-dom": "^16.13.1"
 	},
 	"dependencies": {
-		"@guardian/ab-core": "^0.2.0"
+		"@guardian/ab-core": "^0.3.0"
 	}
 }
