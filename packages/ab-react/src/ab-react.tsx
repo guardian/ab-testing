@@ -51,7 +51,7 @@ export const ABProvider = ({
 	<ABContext.Provider
 		value={
 			new ABConstructor({
-				mvtCookieId: mvtId,
+				mvtId,
 				mvtMaxValue: mvtMax,
 				pageIsSensitive: isSensitive,
 				abTestSwitches: switches,
