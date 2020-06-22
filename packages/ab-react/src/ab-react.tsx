@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React from 'react';
 
-import { AB as ABConstructor } from './ab';
-import { ABTest, CoreAPI } from './types';
+import { AB as ABConstructor, ABTest, CoreAPI } from '@guardian/ab-core';
 
 /**
  * Usage

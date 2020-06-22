@@ -1,4 +1,6 @@
 import { AB } from './ab';
-import { ABProvider, useAB } from './ab-react';
+import { ABTest as _ABTest, CoreAPI as _CoreAPI } from './types';
 
-export { AB, ABProvider, useAB };
+export { AB };
+export type ABTest = _ABTest;
+export type CoreAPI = _CoreAPI;
