@@ -101,6 +101,8 @@ This library does not currently handle the overriding of ab tests into local sto
 
 [Use this simple calculator](https://ab-tests.netlify.app/) to see what MVT ID your test variant will fall into.
 
+![AB Testing Logo](./images/abtesttool.png)
+
 ## Full example
 
 ### Ab test definition
