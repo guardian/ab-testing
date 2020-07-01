@@ -99,9 +99,7 @@ This library does not currently handle the overriding of ab tests into local sto
 
 ## MVTId calculator
 
-Use this simple calculator to see what MVT ID your test variant will fall into.
-
-Screenshot
+[Use this simple calculator](https://ab-tests.netlify.app/) to see what MVT ID your test variant will fall into.
 
 ## Full example
 
