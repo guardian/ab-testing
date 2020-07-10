@@ -108,16 +108,14 @@ export const initCore = (config: ConfigType): CoreAPI => {
 	const allRunnableTests: AllRunnableTests = (tests) =>
 		tests.reduce<Runnable<ABTest>[]>((prev, currentValue) => {
 			// console.log({ currentValue, runnable: runnableTest(currentValue) });
-			// in this pr
-			const rt = runnableTest(currentValue); // i will remove these comments
-			return rt ? [...prev, rt] : prev; // so that this api can be reviewed seperate
-		}, []); // ta
+			const rt = runnableTest(currentValue);
+			return rt ? [...prev, rt] : prev;
+		}, []);
 
-	// Please ignore
 	const firstRunnableTest: CoreAPI['firstRunnableTest'] = (tests) =>
-		tests // in this pr
-			.map((test: ABTest) => runnableTest(test)) // I will remove these comments
-			.find((rt: Runnable<ABTest> | null) => rt !== null) || null; // so that this API can be reviewed seperate
+		tests
+			.map((test: ABTest) => runnableTest(test))
+			.find((rt: Runnable<ABTest> | null) => rt !== null) || null;
 
 	const isUserInVariant: CoreAPI['isUserInVariant'] = (testId, variantId) =>
 		allRunnableTests(arrayOfTestObjects).some(
