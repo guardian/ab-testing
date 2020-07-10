@@ -22,7 +22,7 @@
 		"build": "microbundle",
 		"dev": "microbundle watch",
 		"validate": "yarn lint && yarn tsc && yarn test",
-		"prepublishOnly": "yarn build"
+		"prepublishOnly": "yarn validate && yarn build"
 	},
 	"devDependencies": {
 		"@babel/plugin-proposal-optional-chaining": "^7.10.1",
