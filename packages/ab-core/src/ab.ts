@@ -1,4 +1,4 @@
-import { ABTestAPI, OphanAPI, CoreAPI, AbTestConfig } from './types';
+import { OphanAPI, CoreAPI, AbTestConfig } from './types';
 
 import { initCore } from './core';
 import { initOphan } from './ophan';
