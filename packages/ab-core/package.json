@@ -1,5 +1,5 @@
 {
-	"version": "0.3.0",
+	"version": "0.2.1-alpha.11+75b5583",
 	"name": "@guardian/ab-core",
 	"author": "The Guardian",
 	"license": "Apache-2.0",
@@ -73,5 +73,6 @@
 			"last 1 firefox version",
 			"last 1 safari version"
 		]
-	}
+	},
+	"gitHead": "75b5583b449162fc3334d1433b60427cf4f6394a"
 }
