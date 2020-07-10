@@ -1,18 +1,7 @@
-import { ConfigType, OphanAPI, CoreAPI } from './types';
+import { ABTestAPI, OphanAPI, CoreAPI, AbTestConfig } from './types';
 
 import { initCore } from './core';
 import { initOphan } from './ophan';
-
-const DEFAULT_CONFIG = {
-	mvtMaxValue: 1000000,
-	mvtId: 1234,
-	pageIsSensitive: false,
-	abTestSwitches: {},
-	serverSideTests: {},
-	errorReporter: () => null,
-	ophanRecord: () => null,
-	arrayOfTestObjects: [],
-};
 
 export class AB {
 	private _isUserInVariant: CoreAPI['isUserInVariant'];
@@ -23,23 +12,27 @@ export class AB {
 	private _registerImpressionEvents: OphanAPI['registerImpressionEvents'];
 	private _trackABTests: OphanAPI['trackABTests'];
 
-	constructor(config: ConfigType) {
+	constructor(config: AbTestConfig) {
 		const {
 			mvtMaxValue,
 			mvtId,
 			pageIsSensitive,
 			abTestSwitches,
 			serverSideTests,
+			forcedTestVariant,
+			forcedTestException,
 			errorReporter,
 			ophanRecord,
 			arrayOfTestObjects,
-		} = { ...DEFAULT_CONFIG, ...config };
+		} = config;
 
 		const core = initCore({
 			mvtMaxValue,
 			mvtId,
 			pageIsSensitive,
 			abTestSwitches,
+			forcedTestVariant,
+			forcedTestException,
 			arrayOfTestObjects,
 		});
 

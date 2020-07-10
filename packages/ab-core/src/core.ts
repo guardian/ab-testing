@@ -1,8 +1,8 @@
-import { ABTest, Variant, Runnable, ConfigType, CoreAPI } from './types';
+import { ABTest, Variant, Runnable, CoreAPIConfig, CoreAPI } from './types';
 // import { getVariantFromLocalStorage } from './ab-local-storage'; // Deprecating from localstorage
 import { isExpired } from './lib/time-utils';
 
-export const initCore = (config: ConfigType): CoreAPI => {
+export const initCore = (config: CoreAPIConfig): CoreAPI => {
 	const {
 		mvtMaxValue = 1000000,
 		mvtId,

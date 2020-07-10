@@ -1,6 +1,12 @@
 import { AB } from './ab';
-import { ABTest as _ABTest, CoreAPI as _CoreAPI } from './types';
+import {
+	ABTestAPI as _ABTestAPI,
+	CoreAPI as _CoreAPI,
+	AbTestConfig as _AbTestConfig,
+} from './types';
 
 export { AB };
-export type ABTest = _ABTest;
-export type CoreAPI = _CoreAPI;
+
+export declare type ABTestAPI = _ABTestAPI;
+export declare type CoreAPI = _CoreAPI;
+export declare type AbTestConfig = _AbTestConfig;

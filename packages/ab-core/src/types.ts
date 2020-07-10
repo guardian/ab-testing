@@ -1,4 +1,6 @@
-export type ConfigType = {
+// Top Level Config and APIs
+
+export type CoreAPIConfig = {
 	mvtMaxValue?: number;
 	mvtId: number;
 	pageIsSensitive: boolean;
@@ -7,8 +9,6 @@ export type ConfigType = {
 	forcedTestException?: ABTest['id'];
 	arrayOfTestObjects: ABTest[];
 };
-
-export type ABType = CoreAPI & OphanAPI;
 
 export type CoreAPI = {
 	runnableTest: (
@@ -34,6 +34,11 @@ export type OphanAPI = {
 	registerImpressionEvents: (tests: ReadonlyArray<Runnable<ABTest>>) => void;
 	trackABTests: (tests: ReadonlyArray<Runnable<ABTest>>) => void;
 };
+
+export type ABTestAPI = CoreAPI & OphanAPI;
+export type AbTestConfig = CoreAPIConfig & OphanAPIConfig;
+
+// Internal
 
 export type OphanProduct =
 	| 'CONTRIBUTION'

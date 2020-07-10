@@ -1,5 +1,5 @@
 import { AB } from './ab';
-import { ABType } from './types';
+import { ABTestAPI } from './types';
 
 const DEFAULT_CONFIG = {
 	mvtMaxValue: 1000000,
@@ -9,12 +9,14 @@ const DEFAULT_CONFIG = {
 	serverSideTests: {},
 	errorReporter: () => null,
 	ophanRecord: () => null,
+	forcedTestVariant: undefined,
+	forcedTestException: undefined,
 	arrayOfTestObjects: [],
 };
 
 describe('A/B Initalisation', () => {
 	test('Initalisation returns API', () => {
-		const myAB: ABType = new AB(DEFAULT_CONFIG);
+		const myAB: ABTestAPI = new AB(DEFAULT_CONFIG);
 		expect(myAB).not.toBeUndefined();
 		expect(myAB.isUserInVariant).not.toBeUndefined();
 		expect(myAB.firstRunnableTest).not.toBeUndefined();
