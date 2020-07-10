@@ -9,6 +9,8 @@ const initCoreDefaultConfig = {
 	abTestSwitches: {
 		DummyTest: true,
 		DummyTestException: true,
+		FirstRunnable: true,
+		SecondRunnable: true,
 	},
 	arrayOfTestObjects: [DummyTest],
 };
@@ -239,4 +241,179 @@ describe('A/B test core', () => {
 			).toBeFalsy();
 		});
 	});
+
+	describe('firstRunnableTest', () => {
+		test('should return first runnable test from array', () => {
+			const firstRunnable = genAbTest({
+				id: 'FirstRunnable',
+				canRun: true,
+			});
+
+			const secondRunnable = genAbTest({
+				id: 'SecondRunnable',
+				canRun: true,
+			});
+
+			expect(
+				abTestLibDefault.firstRunnableTest([
+					firstRunnable,
+					secondRunnable,
+				]),
+			).toHaveProperty('id', 'FirstRunnable');
+		});
+
+		test('should return null if no runnable tests', () => {
+			const firstRunnable = genAbTest({
+				id: 'FirstRunnable',
+				canRun: false,
+			});
+
+			const secondRunnable = genAbTest({
+				id: 'SecondRunnable',
+				canRun: false,
+			});
+
+			expect(
+				abTestLibDefault.firstRunnableTest([
+					firstRunnable,
+					secondRunnable,
+				]),
+			).toBe(null);
+		});
+
+		test('should return runnable test if later in the array', () => {
+			const firstRunnable = genAbTest({
+				id: 'FirstRunnable',
+				canRun: false,
+			});
+
+			const secondRunnable = genAbTest({
+				id: 'SecondRunnable',
+				canRun: true,
+			});
+
+			expect(
+				abTestLibDefault.firstRunnableTest([
+					firstRunnable,
+					secondRunnable,
+				]),
+			).toHaveProperty('id', 'SecondRunnable');
+		});
+
+		test('should return runnable test if one runnable variant', () => {
+			const firstRunnable = genAbTest({
+				id: 'FirstRunnable',
+				canRun: true,
+				variants: [
+					genVariant({ id: 'RunnableVariant', canRun: true }),
+					genVariant({ id: 'UnRunnableVariant', canRun: false }),
+				],
+			});
+
+			const secondRunnable = genAbTest({
+				id: 'SecondRunnable',
+				canRun: true,
+				variants: [
+					genVariant({ id: 'UnRunnableVariant', canRun: false }),
+					genVariant({ id: 'UnRunnableVariant', canRun: false }),
+				],
+			});
+
+			expect(
+				abTestLibDefault.firstRunnableTest([
+					firstRunnable,
+					secondRunnable,
+				]),
+			).toHaveProperty('variantToRun.id', 'RunnableVariant');
+		});
+
+		test('Should Return null if not tests or variants runnable', () => {
+			const firstRunnable = genAbTest({
+				id: 'FirstRunnable',
+				canRun: true,
+				variants: [
+					genVariant({ id: 'UnRunnableVariant', canRun: false }),
+					genVariant({ id: 'UnRunnableVariant', canRun: false }),
+				],
+			});
+
+			const secondRunnable = genAbTest({
+				id: 'SecondRunnable',
+				canRun: true,
+				variants: [
+					genVariant({ id: 'UnRunnableVariant', canRun: false }),
+					genVariant({ id: 'UnRunnableVariant', canRun: false }),
+				],
+			});
+
+			expect(
+				abTestLibDefault.firstRunnableTest([
+					firstRunnable,
+					secondRunnable,
+				]),
+			).toBe(null);
+		});
+
+		test('should return runnable if runnable test variants are only in a test later in the array falling into the correct mvtId bucket', () => {
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
+				...{
+					mvtId: 1235,
+				},
+			});
+			const firstRunnable = genAbTest({
+				id: 'FirstRunnable',
+				canRun: true,
+				variants: [
+					genVariant({ id: 'UnRunnableVariant', canRun: false }),
+					genVariant({ id: 'UnRunnableVariant', canRun: false }),
+				],
+			});
+
+			const secondRunnable = genAbTest({
+				id: 'SecondRunnable',
+				canRun: true,
+				variants: [
+					genVariant({ id: 'UnRunnableVariant', canRun: false }),
+					genVariant({ id: 'RunnableVariant2', canRun: true }),
+				],
+			});
+
+			expect(
+				abTestLib.firstRunnableTest([firstRunnable, secondRunnable]),
+			).toHaveProperty('variantToRun.id', 'RunnableVariant2');
+		});
+
+		test('Returns expected first runnable test when all tests and variants are runnable', () => {
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
+				...{
+					mvtId: 1235,
+				},
+			});
+			const firstRunnable = genAbTest({
+				id: 'FirstRunnable',
+				canRun: true,
+				variants: [
+					genVariant({ id: 'FirstRunnableVariant', canRun: true }),
+					genVariant({ id: 'FirstRunnableVariant2', canRun: true }),
+				],
+			});
+
+			const secondRunnable = genAbTest({
+				id: 'SecondRunnable',
+				canRun: true,
+				variants: [
+					genVariant({ id: 'SecondRunnableVariant', canRun: true }),
+					genVariant({ id: 'SecondRunnableVariant2', canRun: true }),
+				],
+			});
+
+			expect(
+				abTestLib.firstRunnableTest([firstRunnable, secondRunnable]),
+			).toHaveProperty('variantToRun.id', 'FirstRunnableVariant2');
+		});
+	});
+
+	// TODO
 });
