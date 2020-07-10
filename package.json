@@ -9,6 +9,14 @@
 		"husky": "^4.2.5",
 		"prettier": "^2.0.5"
 	},
+	"scripts": {
+		"test": "lerna run --parallel test",
+		"tsc": "lerna run --parallel tsc",
+		"lint": "lerna run --parallel lint",
+		"build": "lerna run --parallel build",
+		"dev": "lerna run --parallel dev",
+		"validate": "lerna run --parallel validate"
+	},
 	"husky": {
 		"hooks": {
 			"pre-push": "pretty-quick --staged && lerna run lint && lerna run tsc && lerna run test"
