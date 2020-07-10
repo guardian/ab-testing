@@ -51,7 +51,6 @@ describe('AB', () => {
 			<ABProvider
 				arrayOfTestObjects={[DummyTest]}
 				abTestSwitches={{ abDummyTest: true }}
-				serverSideTests={{ DummyTest: 'true' }}
 				mvtId={19}
 				pageIsSensitive={false}
 			>
@@ -67,7 +66,6 @@ describe('AB', () => {
 			<ABProvider
 				arrayOfTestObjects={[DummyTest]}
 				abTestSwitches={{ abDummyTest: true }}
-				serverSideTests={{ DummyTest: 'true' }}
 				mvtId={20}
 				pageIsSensitive={false}
 			>
@@ -83,7 +81,6 @@ describe('AB', () => {
 			<ABProvider
 				arrayOfTestObjects={[DummyTest]}
 				abTestSwitches={{ abDummyTest: false }}
-				serverSideTests={{ DummyTest: 'false' }}
 				mvtId={19}
 				pageIsSensitive={false}
 			>
@@ -99,7 +96,6 @@ describe('AB', () => {
 			<ABProvider
 				arrayOfTestObjects={[DummyTest]}
 				abTestSwitches={{ abDummyTest: true }}
-				serverSideTests={{ DummyTest: 'true' }}
 				mvtId={19}
 				pageIsSensitive={true}
 			>
@@ -115,7 +111,6 @@ describe('AB', () => {
 			<ABProvider
 				arrayOfTestObjects={[{ ...DummyTest, expiry: '2001-01-01' }]}
 				abTestSwitches={{ abDummyTest: true }}
-				serverSideTests={{ DummyTest: 'true' }}
 				mvtId={19}
 				pageIsSensitive={false}
 			>
