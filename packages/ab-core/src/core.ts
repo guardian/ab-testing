@@ -4,13 +4,13 @@ import { isExpired } from './lib/time-utils';
 
 export const initCore = (config: ConfigType): CoreAPI => {
 	const {
-		mvtMaxValue,
+		mvtMaxValue = 1000000,
 		mvtId,
 		pageIsSensitive,
 		abTestSwitches,
 		forcedTestVariant,
 		forcedTestException,
-		arrayOfTestObjects,
+		arrayOfTestObjects = [],
 	} = config;
 	// We only take account of a variant's canRun function if it's defined.
 	// If it's not, assume the variant can be run.

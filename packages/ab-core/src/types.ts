@@ -1,5 +1,5 @@
 export type ConfigType = {
-	mvtMaxValue: number;
+	mvtMaxValue?: number;
 	mvtId: number;
 	pageIsSensitive: boolean;
 	abTestSwitches: Record<string, boolean>;
@@ -24,9 +24,9 @@ export type CoreAPI = {
 };
 
 export type OphanAPIConfig = {
-	serverSideTests: ServerSideTests;
-	errorReporter: ErrorReporterFunc;
-	ophanRecord: OphanRecordFunction;
+	serverSideTests?: ServerSideTests;
+	errorReporter?: ErrorReporterFunc;
+	ophanRecord?: OphanRecordFunction;
 };
 
 export type OphanAPI = {
