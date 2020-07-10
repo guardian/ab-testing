@@ -4,6 +4,7 @@ export type CoreAPIConfig = {
 	mvtMaxValue?: number;
 	mvtId: number;
 	pageIsSensitive: boolean;
+	// abTestSwitches start with ab with test ID: abTestIAmRunning
 	abTestSwitches: Record<string, boolean>;
 	forcedTestVariant?: { testId: ABTest['id']; variant: Variant };
 	forcedTestException?: ABTest['id'];

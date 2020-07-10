@@ -26,7 +26,8 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 	const testCanBeRun = (test: ABTest): boolean => {
 		const expired = isExpired(test.expiry);
 		const testShouldShowForSensitive = !!test.showForSensitive;
-		const isTestOn = abTestSwitches[test.id] && !!abTestSwitches[test.id];
+		const isTestOn =
+			abTestSwitches[`ab${test.id}`] && !!abTestSwitches[`ab${test.id}`];
 		const canTestBeRun = !test.canRun || test.canRun();
 
 		// console.log({
