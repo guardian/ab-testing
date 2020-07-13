@@ -30,14 +30,14 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 			abTestSwitches[`ab${test.id}`] && !!abTestSwitches[`ab${test.id}`];
 		const canTestBeRun = !test.canRun || test.canRun();
 
-		// console.log({
-		// 	expired,
-		// 	pageIsSensitive,
-		// 	testShouldShowForSensitive,
-		// 	isTestOn,
-		// 	canTestBeRun,
-		// 	testCanRun: test.canRun(),
-		// });
+		console.log({
+			expired,
+			pageIsSensitive,
+			testShouldShowForSensitive,
+			isTestOn,
+			canTestBeRun,
+			testCanRun: test.canRun(),
+		});
 
 		return (
 			(pageIsSensitive ? testShouldShowForSensitive : true) &&
@@ -80,12 +80,12 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 		const forcedOutOfTest = forcedTestException === test.id;
 		const variantToRun = fromForcedTest || fromCookie;
 
-		// console.log({
-		// 	forcedOutOfTest,
-		// 	fromForcedTest,
-		// 	variantToRun,
-		// 	testCanBeRun: testCanBeRun(test),
-		// });
+		console.log({
+			forcedOutOfTest,
+			fromForcedTest,
+			variantToRun,
+			testCanBeRun: testCanBeRun(test),
+		});
 
 		if (
 			!forcedOutOfTest &&
