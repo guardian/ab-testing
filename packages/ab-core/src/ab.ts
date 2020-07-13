@@ -4,6 +4,7 @@ import { initCore } from './core';
 import { initOphan } from './ophan';
 
 export class AB {
+	private _allRunnableTests: CoreAPI['allRunnableTests'];
 	private _isUserInVariant: CoreAPI['isUserInVariant'];
 	private _firstRunnableTest: CoreAPI['firstRunnableTest'];
 	private _runnableTest: CoreAPI['runnableTest'];
@@ -42,6 +43,7 @@ export class AB {
 			ophanRecord,
 		});
 
+		this._allRunnableTests = core.allRunnableTests;
 		this._firstRunnableTest = core.firstRunnableTest;
 		this._runnableTest = core.runnableTest;
 		this._isUserInVariant = core.isUserInVariant;
@@ -52,6 +54,9 @@ export class AB {
 	}
 
 	// CoreAPI
+	get allRunnableTests(): CoreAPI['allRunnableTests'] {
+		return this._allRunnableTests;
+	}
 	get firstRunnableTest(): CoreAPI['firstRunnableTest'] {
 		return this._firstRunnableTest;
 	}
