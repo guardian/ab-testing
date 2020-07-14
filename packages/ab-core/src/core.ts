@@ -30,14 +30,15 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 			abTestSwitches[`ab${test.id}`] && !!abTestSwitches[`ab${test.id}`];
 		const canTestBeRun = !test.canRun || test.canRun();
 
-		console.log({
-			expired,
-			pageIsSensitive,
-			testShouldShowForSensitive,
-			isTestOn,
-			canTestBeRun,
-			testCanRun: test.canRun(),
-		});
+		// console.log({
+		// 	id: test.id,
+		// 	expired,
+		// 	pageIsSensitive,
+		// 	testShouldShowForSensitive,
+		// 	isTestOn,
+		// 	canTestBeRun,
+		// 	testCanRun: test.canRun(),
+		// });
 
 		return (
 			(pageIsSensitive ? testShouldShowForSensitive : true) &&
@@ -55,6 +56,9 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 	const computeVariantFromMvtCookie = (test: ABTest): Variant | null => {
 		const smallestTestId = mvtMaxValue * test.audienceOffset;
 		const largestTestId = smallestTestId + mvtMaxValue * test.audience;
+
+		console.log(test.variants);
+		console.log(mvtId);
 
 		if (mvtId && mvtId > smallestTestId && mvtId <= largestTestId) {
 			// This mvt test id is in the test range, so allocate it to a test variant.
@@ -80,12 +84,12 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 		const forcedOutOfTest = forcedTestException === test.id;
 		const variantToRun = fromForcedTest || fromCookie;
 
-		console.log({
-			forcedOutOfTest,
-			fromForcedTest,
-			variantToRun,
-			testCanBeRun: testCanBeRun(test),
-		});
+		// console.log({
+		// 	forcedOutOfTest,
+		// 	fromForcedTest,
+		// 	variantToRun,
+		// 	testCanBeRun: testCanBeRun(test),
+		// });
 
 		if (
 			!forcedOutOfTest &&
@@ -117,9 +121,22 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 
 	const isUserInVariant: CoreAPI['isUserInVariant'] = (testId, variantId) =>
 		allRunnableTests(arrayOfTestObjects).some(
-			(runnableTest: ABTest & { variantToRun: Variant }) =>
-				runnableTest.id === testId &&
-				runnableTest.variantToRun.id === variantId,
+			(runnableTest: ABTest & { variantToRun: Variant }) => {
+				// console.log({
+				// 	testId,
+				// 	variantId,
+				// 	runnableTestId: runnableTest.id,
+				// 	variantToRun: runnableTest.variantToRun.id,
+				// 	isUserInVariant:
+				// 		runnableTest.id === testId &&
+				// 		runnableTest.variantToRun.id === variantId,
+				// });
+
+				return (
+					runnableTest.id === testId &&
+					runnableTest.variantToRun.id === variantId
+				);
+			},
 		);
 
 	return {
