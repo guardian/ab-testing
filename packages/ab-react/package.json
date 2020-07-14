@@ -1,5 +1,5 @@
 {
-	"version": "0.2.1-alpha.18+fa886b4",
+	"version": "1.0.0-next.0",
 	"name": "@guardian/ab-react",
 	"author": "The Guardian",
 	"license": "Apache-2.0",
@@ -85,9 +85,9 @@
 		]
 	},
 	"peerDependencies": {
+		"@guardian/ab-core": "^0.3.0",
 		"react": "^16.13.1",
-		"react-dom": "^16.13.1",
-		"@guardian/ab-core": "^0.3.0"
+		"react-dom": "^16.13.1"
 	},
 	"gitHead": "fa886b48d017ea36c24204bb2398fa4fb1ceb9de"
 }
