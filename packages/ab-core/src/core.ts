@@ -57,9 +57,6 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 		const smallestTestId = mvtMaxValue * test.audienceOffset;
 		const largestTestId = smallestTestId + mvtMaxValue * test.audience;
 
-		console.log(test.variants);
-		console.log(mvtId);
-
 		if (mvtId && mvtId > smallestTestId && mvtId <= largestTestId) {
 			// This mvt test id is in the test range, so allocate it to a test variant.
 			return test.variants[mvtId % test.variants.length];

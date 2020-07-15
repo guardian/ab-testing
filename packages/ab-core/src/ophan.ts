@@ -138,10 +138,6 @@ export const initOphan = (config: OphanAPIConfig): OphanAPI => {
 	const registerImpressionEvents: OphanAPI['registerImpressionEvents'] = (
 		tests,
 	) => {
-		console.log('registering impression events');
-		console.log(tests);
-		console.log('registering for', tests.filter(defersImpression));
-
 		tests
 			.filter(defersImpression)
 			.forEach(registerCompleteEvent(false, errorReporter, ophanRecord));
