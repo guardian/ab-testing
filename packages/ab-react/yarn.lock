@@ -983,10 +983,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@guardian/ab-core@^0.1.1-alpha.18":
-  version "0.1.1-alpha.18"
-  resolved "https://registry.yarnpkg.com/@guardian/ab-core/-/ab-core-0.1.1-alpha.18.tgz#10141e55c7652852cb0eaf38b38ac84fa5f07096"
-  integrity sha512-oZf4tX8cOwmTnj34/dnRsaIjwM72Dwn8QtHLRAHQZqb37XxEp/BqWSNj0nSJrW7V7YYE547HZ/tMt7pnd+YK/Q==
+"@guardian/ab-core@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@guardian/ab-core/-/ab-core-0.3.0.tgz#a68951614f46ca1e2bee8b255b1044eba1f4ae77"
+  integrity sha512-M2YAPAKhX60QLFVgk7FkyrvvAYgw/Ul8VUFQdxNJuEzMxIYL13jmWqDFW+06mcSup2ihVo3S8V1ZV+nSH74UmA==
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -4530,9 +4530,9 @@ lodash.uniq@^4.5.0:
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
 lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 lolex@^5.0.0:
   version "5.1.2"
