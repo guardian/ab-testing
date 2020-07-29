@@ -4,9 +4,11 @@ import {
 	ABTestAPI as _ABTestAPI,
 	AbTestConfig as _AbTestConfig,
 	Runnable as _Runnable,
+	Variant as _Variant,
 } from './types';
 export { AB };
 export declare type ABTest = _ABTest;
 export declare type ABTestAPI = _ABTestAPI;
 export declare type AbTestConfig = _AbTestConfig;
 export declare type Runnable = _Runnable<_ABTest>;
+export declare type Variant = _Variant;
