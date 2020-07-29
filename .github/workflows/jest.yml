@@ -11,5 +11,6 @@ jobs:
                   node-version: '10.x'
             - run: yarn
             - run: yarn lerna bootstrap
+            - run: yarn lerna link
             - run: yarn lerna run build
             - run: CI=true yarn lerna run test --parallel
