@@ -49,10 +49,10 @@ describe('AB', () => {
 	it('puts a user in the test bucket when test is valid and mvtId value is in scope', () => {
 		render(
 			<ABProvider
-				tests={[DummyTest]}
-				switches={{ DummyTest: true }}
+				arrayOfTestObjects={[DummyTest]}
+				abTestSwitches={{ abDummyTest: true }}
 				mvtId={19}
-				isSensitive={false}
+				pageIsSensitive={false}
 			>
 				<Example />
 			</ABProvider>,
@@ -64,10 +64,10 @@ describe('AB', () => {
 	it('does not put user in bucket when mvtId out of scope', () => {
 		render(
 			<ABProvider
-				tests={[DummyTest]}
-				switches={{ DummyTest: true }}
+				arrayOfTestObjects={[DummyTest]}
+				abTestSwitches={{ abDummyTest: true }}
 				mvtId={20}
-				isSensitive={false}
+				pageIsSensitive={false}
 			>
 				<Example />
 			</ABProvider>,
@@ -79,10 +79,10 @@ describe('AB', () => {
 	it('does not put user in bucket when test is turned off with a switch', () => {
 		render(
 			<ABProvider
-				tests={[DummyTest]}
-				switches={{ DummyTest: false }}
+				arrayOfTestObjects={[DummyTest]}
+				abTestSwitches={{ abDummyTest: false }}
 				mvtId={19}
-				isSensitive={false}
+				pageIsSensitive={false}
 			>
 				<Example />
 			</ABProvider>,
@@ -94,10 +94,10 @@ describe('AB', () => {
 	it('does not put user in bucket when isSensitive is true', () => {
 		render(
 			<ABProvider
-				tests={[DummyTest]}
-				switches={{ DummyTest: true }}
+				arrayOfTestObjects={[DummyTest]}
+				abTestSwitches={{ abDummyTest: true }}
 				mvtId={19}
-				isSensitive={true}
+				pageIsSensitive={true}
 			>
 				<Example />
 			</ABProvider>,
@@ -109,10 +109,10 @@ describe('AB', () => {
 	it('does not put user in bucket when test is expired', () => {
 		render(
 			<ABProvider
-				tests={[{ ...DummyTest, expiry: '2001-01-01' }]}
-				switches={{ DummyTest: true }}
+				arrayOfTestObjects={[{ ...DummyTest, expiry: '2001-01-01' }]}
+				abTestSwitches={{ abDummyTest: true }}
 				mvtId={19}
-				isSensitive={false}
+				pageIsSensitive={false}
 			>
 				<Example />
 			</ABProvider>,

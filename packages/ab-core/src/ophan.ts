@@ -87,8 +87,8 @@ const registerCompleteEvent = (
 
 const buildOphanPayload = (
 	tests: ReadonlyArray<Runnable<ABTest>>,
-	serverSideTestObj: ServerSideTests,
 	errorReporter: ErrorReporterFunc,
+	serverSideTestObj: ServerSideTests,
 ): OphanABPayload => {
 	try {
 		const log: OphanABPayload = {};
@@ -121,7 +121,11 @@ const buildOphanPayload = (
 };
 
 export const initOphan = (config: OphanAPIConfig): OphanAPI => {
-	const { serverSideTests, errorReporter, ophanRecord } = config;
+	const {
+		serverSideTests = {},
+		errorReporter = () => undefined,
+		ophanRecord = () => undefined,
+	} = config;
 
 	const registerCompleteEvents: OphanAPI['registerCompleteEvents'] = (
 		tests,
@@ -133,14 +137,15 @@ export const initOphan = (config: OphanAPIConfig): OphanAPI => {
 
 	const registerImpressionEvents: OphanAPI['registerImpressionEvents'] = (
 		tests,
-	) =>
+	) => {
 		tests
 			.filter(defersImpression)
 			.forEach(registerCompleteEvent(false, errorReporter, ophanRecord));
+	};
 
 	const trackABTests: OphanAPI['trackABTests'] = (tests) =>
 		submit(
-			buildOphanPayload(tests, serverSideTests, errorReporter),
+			buildOphanPayload(tests, errorReporter, serverSideTests),
 			ophanRecord,
 		);
 

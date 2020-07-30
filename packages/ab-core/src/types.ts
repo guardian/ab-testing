@@ -1,16 +1,20 @@
-export type ConfigType = {
-	mvtMaxValue: number;
+// Top Level Config and APIs
+
+export type CoreAPIConfig = {
+	mvtMaxValue?: number;
 	mvtId: number;
 	pageIsSensitive: boolean;
+	// abTestSwitches start with ab with test ID: abTestIAmRunning
 	abTestSwitches: Record<string, boolean>;
 	forcedTestVariant?: { testId: ABTest['id']; variant: Variant };
 	forcedTestException?: ABTest['id'];
 	arrayOfTestObjects: ABTest[];
 };
 
-export type ABType = CoreAPI & OphanAPI;
-
 export type CoreAPI = {
+	allRunnableTests: (
+		tests: ReadonlyArray<ABTest>,
+	) => ReadonlyArray<Runnable<ABTest>> | [];
 	runnableTest: (
 		test: ABTest,
 	) => Runnable<ABTest & { variantToRun: Variant }> | null;
@@ -24,9 +28,9 @@ export type CoreAPI = {
 };
 
 export type OphanAPIConfig = {
-	serverSideTests: ServerSideTests;
-	errorReporter: ErrorReporterFunc;
-	ophanRecord: OphanRecordFunction;
+	serverSideTests?: ServerSideTests;
+	errorReporter?: ErrorReporterFunc;
+	ophanRecord?: OphanRecordFunction;
 };
 
 export type OphanAPI = {
@@ -34,6 +38,11 @@ export type OphanAPI = {
 	registerImpressionEvents: (tests: ReadonlyArray<Runnable<ABTest>>) => void;
 	trackABTests: (tests: ReadonlyArray<Runnable<ABTest>>) => void;
 };
+
+export type ABTestAPI = CoreAPI & OphanAPI;
+export type AbTestConfig = CoreAPIConfig & OphanAPIConfig;
+
+// Internal
 
 export type OphanProduct =
 	| 'CONTRIBUTION'

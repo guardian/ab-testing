@@ -7,10 +7,10 @@ const initCoreDefaultConfig = {
 	mvtId: 1234,
 	pageIsSensitive: false,
 	abTestSwitches: {
-		DummyTest: true,
-		DummyTestException: true,
-		FirstRunnable: true,
-		SecondRunnable: true,
+		abDummyTest: true,
+		abDummyTestException: true,
+		abFirstRunnable: true,
+		abSecondRunnable: true,
 	},
 	arrayOfTestObjects: [DummyTest],
 };

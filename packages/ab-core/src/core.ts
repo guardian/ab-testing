@@ -1,16 +1,16 @@
-import { ABTest, Variant, Runnable, ConfigType, CoreAPI } from './types';
+import { ABTest, Variant, Runnable, CoreAPIConfig, CoreAPI } from './types';
 // import { getVariantFromLocalStorage } from './ab-local-storage'; // Deprecating from localstorage
 import { isExpired } from './lib/time-utils';
 
-export const initCore = (config: ConfigType): CoreAPI => {
+export const initCore = (config: CoreAPIConfig): CoreAPI => {
 	const {
-		mvtMaxValue,
+		mvtMaxValue = 1000000,
 		mvtId,
 		pageIsSensitive,
 		abTestSwitches,
 		forcedTestVariant,
 		forcedTestException,
-		arrayOfTestObjects,
+		arrayOfTestObjects = [],
 	} = config;
 	// We only take account of a variant's canRun function if it's defined.
 	// If it's not, assume the variant can be run.
@@ -26,10 +26,12 @@ export const initCore = (config: ConfigType): CoreAPI => {
 	const testCanBeRun = (test: ABTest): boolean => {
 		const expired = isExpired(test.expiry);
 		const testShouldShowForSensitive = !!test.showForSensitive;
-		const isTestOn = abTestSwitches[test.id] && !!abTestSwitches[test.id];
+		const isTestOn =
+			abTestSwitches[`ab${test.id}`] && !!abTestSwitches[`ab${test.id}`];
 		const canTestBeRun = !test.canRun || test.canRun();
 
 		// console.log({
+		// 	id: test.id,
 		// 	expired,
 		// 	pageIsSensitive,
 		// 	testShouldShowForSensitive,
@@ -102,10 +104,7 @@ export const initCore = (config: ConfigType): CoreAPI => {
 		return null;
 	};
 
-	type AllRunnableTests = (
-		tests: ReadonlyArray<ABTest>,
-	) => ReadonlyArray<Runnable<ABTest>> | [];
-	const allRunnableTests: AllRunnableTests = (tests) =>
+	const allRunnableTests: CoreAPI['allRunnableTests'] = (tests) =>
 		tests.reduce<Runnable<ABTest>[]>((prev, currentValue) => {
 			// console.log({ currentValue, runnable: runnableTest(currentValue) });
 			const rt = runnableTest(currentValue);
@@ -119,12 +118,26 @@ export const initCore = (config: ConfigType): CoreAPI => {
 
 	const isUserInVariant: CoreAPI['isUserInVariant'] = (testId, variantId) =>
 		allRunnableTests(arrayOfTestObjects).some(
-			(runnableTest: ABTest & { variantToRun: Variant }) =>
-				runnableTest.id === testId &&
-				runnableTest.variantToRun.id === variantId,
+			(runnableTest: ABTest & { variantToRun: Variant }) => {
+				// console.log({
+				// 	testId,
+				// 	variantId,
+				// 	runnableTestId: runnableTest.id,
+				// 	variantToRun: runnableTest.variantToRun.id,
+				// 	isUserInVariant:
+				// 		runnableTest.id === testId &&
+				// 		runnableTest.variantToRun.id === variantId,
+				// });
+
+				return (
+					runnableTest.id === testId &&
+					runnableTest.variantToRun.id === variantId
+				);
+			},
 		);
 
 	return {
+		allRunnableTests,
 		runnableTest,
 		firstRunnableTest,
 		isUserInVariant,

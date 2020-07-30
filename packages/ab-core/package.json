@@ -1,5 +1,5 @@
 {
-	"version": "0.3.0",
+	"version": "1.1.0-next.0",
 	"name": "@guardian/ab-core",
 	"author": "The Guardian",
 	"license": "Apache-2.0",
@@ -22,7 +22,7 @@
 		"build": "microbundle",
 		"dev": "microbundle watch",
 		"validate": "yarn lint && yarn tsc && yarn test",
-		"prepublishOnly": "yarn build"
+		"prepublishOnly": "yarn validate && yarn build"
 	},
 	"devDependencies": {
 		"@babel/plugin-proposal-optional-chaining": "^7.10.1",
@@ -73,5 +73,6 @@
 			"last 1 firefox version",
 			"last 1 safari version"
 		]
-	}
+	},
+	"gitHead": "75b5583b449162fc3334d1433b60427cf4f6394a"
 }

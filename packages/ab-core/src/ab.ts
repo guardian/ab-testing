@@ -1,20 +1,10 @@
-import { ConfigType, OphanAPI, CoreAPI } from './types';
+import { OphanAPI, CoreAPI, AbTestConfig } from './types';
 
 import { initCore } from './core';
 import { initOphan } from './ophan';
 
-const DEFAULT_CONFIG = {
-	mvtMaxValue: 1000000,
-	mvtId: 1234,
-	pageIsSensitive: false,
-	abTestSwitches: {},
-	serverSideTests: {},
-	errorReporter: () => null,
-	ophanRecord: () => null,
-	arrayOfTestObjects: [],
-};
-
 export class AB {
+	private _allRunnableTests: CoreAPI['allRunnableTests'];
 	private _isUserInVariant: CoreAPI['isUserInVariant'];
 	private _firstRunnableTest: CoreAPI['firstRunnableTest'];
 	private _runnableTest: CoreAPI['runnableTest'];
@@ -23,23 +13,27 @@ export class AB {
 	private _registerImpressionEvents: OphanAPI['registerImpressionEvents'];
 	private _trackABTests: OphanAPI['trackABTests'];
 
-	constructor(config: ConfigType) {
+	constructor(config: AbTestConfig) {
 		const {
 			mvtMaxValue,
 			mvtId,
 			pageIsSensitive,
 			abTestSwitches,
 			serverSideTests,
+			forcedTestVariant,
+			forcedTestException,
 			errorReporter,
 			ophanRecord,
 			arrayOfTestObjects,
-		} = { ...DEFAULT_CONFIG, ...config };
+		} = config;
 
 		const core = initCore({
 			mvtMaxValue,
 			mvtId,
 			pageIsSensitive,
 			abTestSwitches,
+			forcedTestVariant,
+			forcedTestException,
 			arrayOfTestObjects,
 		});
 
@@ -49,6 +43,7 @@ export class AB {
 			ophanRecord,
 		});
 
+		this._allRunnableTests = core.allRunnableTests;
 		this._firstRunnableTest = core.firstRunnableTest;
 		this._runnableTest = core.runnableTest;
 		this._isUserInVariant = core.isUserInVariant;
@@ -59,6 +54,9 @@ export class AB {
 	}
 
 	// CoreAPI
+	get allRunnableTests(): CoreAPI['allRunnableTests'] {
+		return this._allRunnableTests;
+	}
 	get firstRunnableTest(): CoreAPI['firstRunnableTest'] {
 		return this._firstRunnableTest;
 	}
