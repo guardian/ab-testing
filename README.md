@@ -205,13 +205,6 @@ Within your platforms, you should define the test this way. If the test needs to
 ```ts
 import { ABTest } from '@guardian/ab-core';
 
-const event = new Event('abTestTest');
-// Listen for the event.
-elem.addEventListener('build', function (e) { /* ... */ }, false);
-
-// Dispatch the event.
-elem.dispatchEvent(event);
-
 export const abTestTest: ABTest = {
     id: 'AbTestTest', // This ID must match the Server Side AB Test
     start: '2020-05-20',
