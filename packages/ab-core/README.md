@@ -1,4 +1,4 @@
-# AB React
+# AB Core
 
 A client-side library for ab-testing
 
