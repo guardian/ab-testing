@@ -46,7 +46,7 @@ In a (P)react project, there's a react provider, so you also need:
 ## How it works
 
 1. **Define the AB test**: Each AB test and their variants are defined in code with configuration such as audience size & offset and impression & success listeners etc
-2. **Initialise the libary**: The AB Test library is initialised with configuration values such as a user's MVT ID, an array of the above defined A/B tests etc
+2. **Initialise the library**: The AB Test library is initialised with configuration values such as a user's MVT ID, an array of the above defined A/B tests etc
 3. **Use the AB Test API**: The intialisation returns an API that can be used to check if the current user is in a variant of a test along with a variety of other API methods
 
 ## Frontend: Difference and Integration with DCR
@@ -63,7 +63,7 @@ In a (P)react project, there's a react provider, so you also need:
 -   The public API is reduced to only what was used in Frontend
 -   Some public methods have been renamed like `isUserInVariant` (this does make it difficult to copy and paste an implementation between Frontend and DCR right now until this library is integrated with Frontend)
 
-## Initalising in a non-react project
+## Initialising in a non-react project
 
 ```ts
 import { AB } from '@guardian/ab-core';
@@ -86,7 +86,7 @@ abTests.firstRunnableTest([tests]);
 abTests.isUserInVariant(testId, variantId);
 ```
 
-## Initalising in a React project
+## Initialising in a React project
 
 Intialise the config options with the ABProvider
 
