@@ -2,6 +2,8 @@
 
 # The Guardian's AB Testing Library
 
+## Getting Started
+
 `yarn add @guardian/ab-core`
 
 In a (P)react project, there's a react provider, so you also need:
@@ -17,7 +19,7 @@ And then [using the API](#the-api).
 
 <small>ab-core is a peer-dependency of ab-react so you need both installed if you want to use the provider</small>
 
-## This is a client-side AB Testing Library
+## What does this client-side A/B testing library do?
 
 This library:
 
@@ -36,7 +38,8 @@ There’s some background to the [early requirements to the library and some doc
 <!-- toc -->
 
 * [The Guardian's AB Testing Library](#the-guardians-ab-testing-library)
-  * [This is a client-side AB Testing Library](#this-is-a-client-side-ab-testing-library)
+  * [Getting Started](#getting-started)
+  * [What does this client-side A/B testing library do?](#what-does-this-client-side-ab-testing-library-do)
   * [How it works](#how-it-works)
     * [Initialising in a non-react project](#initialising-in-a-non-react-project)
     * [Initialising in a React project](#initialising-in-a-react-project)
