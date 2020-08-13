@@ -1,6 +1,23 @@
 ![AB Testing Logo](./images/logo.png)
 
-# This is a client-side AB Testing Library
+# The Guardian's AB Testing Library
+
+`yarn add @guardian/ab-core`
+
+In a (P)react project, there's a react provider, so you also need:
+
+`yarn add @guardian/ab-react`
+
+And then:
+
+-   [Initialising in a non-react project](#initialising-in-a-non-react-project)
+-   [Initialising in a React project](#initialising-in-a-react-project)
+
+And then [using the API](#the-api).
+
+<small>ab-core is a peer-dependency of ab-react so you need both installed if you want to use the provider</small>
+
+## This is a client-side AB Testing Library
 
 This library:
 
@@ -12,36 +29,37 @@ This library:
 
 There’s some background to the [early requirements to the library and some documentation in Frontend](https://github.com/guardian/frontend/blob/master/docs/03-dev-howtos/01-ab-testing.md), there’s some [notes about the migration of ab tests](https://docs.google.com/document/d/1-_koo-DK9n7pRT_74nP72lq9o4RVl-RytUOZKqPVf4A/edit).
 
-- [This is a client-side AB Testing Library](#this-is-a-client-side-ab-testing-library)
-  - [Use the AB Test Library](#use-the-ab-test-library)
-  - [How it works](#how-it-works)
-  - [Frontend: Difference and Integration with DCR](#frontend-difference-and-integration-with-dcr)
-    - [Integration between Frontend and DCR](#integration-between-frontend-and-dcr)
-    - [Differences of this library vs Frontend implementation](#differences-of-this-library-vs-frontend-implementation)
-  - [Initalising in a non-react project](#initalising-in-a-non-react-project)
-  - [Initalising in a React project](#initalising-in-a-react-project)
-  - [The initalisation config object](#the-initalisation-config-object)
-    - [Frontend and DCR](#frontend-and-dcr)
-  - [AB testing API](#ab-testing-api)
-  - [Deprecation/Descoping of localstorage](#deprecationdescoping-of-localstorage)
-  - [MVTId calculator](#mvtid-calculator)
-    - [Ab Test Definition](#ab-test-definition)
-  - [Contributions](#contributions)
-    - [Lerna](#lerna)
-    - [Testing](#testing)
-    - [Yarn Link & Peer Dependencies](#yarn-link--peer-dependencies)
-    - [Microbundle](#microbundle)
-    - [Constructor](#constructor)
+<!-- Run `npx marked-toc README.md` -->
 
-## Use the AB Test Library
 
-`yarn add @guardian/ab-core`
 
-In a (P)react project, there's a react provider, so you also need:
+<!-- toc -->
 
-`yarn add @guardian/ab-react`
+* [The Guardian's AB Testing Library](#the-guardians-ab-testing-library)
+  * [This is a client-side AB Testing Library](#this-is-a-client-side-ab-testing-library)
+  * [How it works](#how-it-works)
+    * [Initialising in a non-react project](#initialising-in-a-non-react-project)
+    * [Initialising in a React project](#initialising-in-a-react-project)
+    * [The initalisation config object](#the-initalisation-config-object)
+    * [The API](#the-api)
+    * [Ab Test Definition](#ab-test-definition)
+    * [Example of the AB Test config in Frontend and DCR](#example-of-the-ab-test-config-in-frontend-and-dcr)
+  * [Frontend: Difference and Integration with DCR](#frontend-difference-and-integration-with-dcr)
+    * [Integration between Frontend and DCR](#integration-between-frontend-and-dcr)
+    * [Differences of this library vs Frontend implementation](#differences-of-this-library-vs-frontend-implementation)
+    * [Deprecation/Descoping of localstorage](#deprecationdescoping-of-localstorage)
+  * [MVTId calculator](#mvtid-calculator)
+  * [Contributions](#contributions)
+    * [Lerna](#lerna)
+    * [Publishing to NPM with Lerna](#publishing-to-npm-with-lerna)
+    * [Testing with Jest](#testing-with-jest)
+    * [Yarn Link & Peer Dependencies](#yarn-link-peer-dependencies)
+    * [Building the library with Microbundle](#building-the-library-with-microbundle)
+    * [Constructor and Provider Patterns](#constructor-and-provider-patterns)
+  * [What's Next](#whats-next)
 
-<small>ab-core is a peer-dependency of ab-react so you need both installed if you want to use the provider</small>
+<!-- toc stop -->
+
 
 ## How it works
 
@@ -49,21 +67,7 @@ In a (P)react project, there's a react provider, so you also need:
 2. **Initialise the library**: The AB Test library is initialised with configuration values such as a user's MVT ID, an array of the above defined A/B tests etc
 3. **Use the AB Test API**: The intialisation returns an API that can be used to check if the current user is in a variant of a test along with a variety of other API methods
 
-## Frontend: Difference and Integration with DCR
-
-### Integration between Frontend and DCR
-
--   There is currently a requirement to copy and paste the AB test definitions between the two platforms. Each platform has an `experiments` folder ([Frontend](https://github.com/guardian/frontend/blob/master/static/src/javascripts/projects/common/modules/experiment), [DCR](https://github.com/guardian/dotcom-rendering/blob/master/src/web/experiments)) and the test definition and structure of those folders should match. The difference will be where to import - in Frontend in [abtest.js](https://github.com/guardian/frontend/blob/master/static/src/javascripts/projects/common/modules/experiments/ab-tests.js) and in DCR in [ab-tests.ts](https://github.com/guardian/dotcom-rendering/blob/master/src/web/experiments/ab-tests.ts).
--   For Frontend and DCR, you will need to have a switch as you would usually do in Frontend. This will be passed through to DCR in the backend and be accessible to the client-side code.
-
-### Differences of this library vs Frontend implementation
-
--   There is no localstorage functionality in this library, unlike previously where you could store the A/B test in Frontend. To persist an opted-in test, the MVT cookie will need to be set to the correct value.
--   Handles only concurrent tests, this library does not concern itself with epics or banner tests
--   The public API is reduced to only what was used in Frontend
--   Some public methods have been renamed like `isUserInVariant` (this does make it difficult to copy and paste an implementation between Frontend and DCR right now until this library is integrated with Frontend)
-
-## Initialising in a non-react project
+### Initialising in a non-react project
 
 ```ts
 import { AB } from '@guardian/ab-core';
@@ -86,7 +90,7 @@ abTests.firstRunnableTest([tests]);
 abTests.isUserInVariant(testId, variantId);
 ```
 
-## Initialising in a React project
+### Initialising in a React project
 
 Intialise the config options with the ABProvider
 
@@ -154,7 +158,7 @@ const variantFromRunnable =
 </div>;
 ```
 
-## The initalisation config object
+### The initalisation config object
 
 | Config              | Type                                                 | Example                          |
 | ------------------- | ---------------------------------------------------- | -------------------------------- |
@@ -169,34 +173,32 @@ const variantFromRunnable =
 | errorReporter       | ErrorReporterFunc                                    |                                  |
 | ophanRecord         | OphanRecordFunction                                  |                                  |
 
-### Frontend and DCR
+### The API
 
-The initialisation values are populated on these platforms like so:
+```ts
+type CoreAPI = {
+	allRunnableTests: (
+		tests: ReadonlyArray<ABTest>,
+	) => ReadonlyArray<Runnable<ABTest>> | [];
+	runnableTest: (
+		test: ABTest,
+	) => Runnable<ABTest & { variantToRun: Variant }> | null;
+	firstRunnableTest: (
+		tests: ReadonlyArray<ABTest>,
+	) => Runnable<ABTest> | null;
+	isUserInVariant: (
+		testId: ABTest['id'],
+		variantId?: Variant['id'],
+	) => boolean;
+};
+```
 
-| Config              | Note                                                                                                                              |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| mvtMaxValue         | MVT % is calculated from 0 to mvtMaxValue                                                                                         |
-| mvtCookieId         | The user's MVT ID to calculate what tests and variants they fall into                                                             |
-| pageIsSensitive     | Sensitive pages must have explicit settings in AB tests                                                                           |
-| abTestSwitches      | An object containing all of the boolean values of abTestSwitches, in Frontend from page.config.switches.abTests                   |
-| forcedTestVariant   | In Frontend this might be set by the URL override, but otherwise can be used to force a user into a test and variant at init time |
-| forcedTestException | Can be used to force a user out of a test (in Frontend, again with url override)                                                  |
-| arrayOfTestObjects  | Pass all tests definitions into the config                                                                                        |
-| ServerSideTets      | ServerSideTests are accessed via client-side config in Frontend and DCR                                                           |
-| errorReporter       | Pass an error reporter, probably Sentry                                                                                           |
-| ophanRecord         | Probably Ophan's 'record' function                                                                                                |
-
-## AB testing API
-
-## Deprecation/Descoping of localstorage
-
-This library does not currently handle the overriding of ab tests into local storage. To override _and_ persist you’ll need to set an mvt id- on theguardian.com that’s the cookie, you can calculate the mvt is required with the calculator below.
-
-## MVTId calculator
-
-[Use this simple calculator](https://ab-tests.netlify.app/) to see what MVT ID your test variant will fall into.
-
-![AB Testing Tool](./images/abtesttool.gif)
+| API Method        | Params                         | Returns                                                                                    |
+| ----------------- | ------------------------------ | ------------------------------------------------------------------------------------------ |
+| allRunnableTests  | Array of ab tests              | Array of Runnable tests or empty array                                                     |
+| runnableTest      | A single AB test               | A runnable ab test object with variantToRun property containing the variant to run or null |
+| firstRunnableTest | Array of AB Tests              | A runnable ab test object or null                                                          |
+| isUserInVariant   | A AB test ID, and a Variant ID | A boolean                                                                                  |
 
 ### Ab Test Definition
 
@@ -266,6 +268,49 @@ window.dispatchEvent(new CustomEvent('guAbTestEvent', {
 }))
 ```
 
+### Example of the AB Test config in Frontend and DCR
+
+The initialisation values are populated on these platforms like so:
+
+| Config              | Note                                                                                                                              |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| mvtMaxValue         | MVT % is calculated from 0 to mvtMaxValue                                                                                         |
+| mvtCookieId         | The user's MVT ID to calculate what tests and variants they fall into                                                             |
+| pageIsSensitive     | Sensitive pages must have explicit settings in AB tests                                                                           |
+| abTestSwitches      | An object containing all of the boolean values of abTestSwitches, in Frontend from page.config.switches.abTests                   |
+| forcedTestVariant   | In Frontend this might be set by the URL override, but otherwise can be used to force a user into a test and variant at init time |
+| forcedTestException | Can be used to force a user out of a test (in Frontend, again with url override)                                                  |
+| arrayOfTestObjects  | Pass all tests definitions into the config                                                                                        |
+| ServerSideTets      | ServerSideTests are accessed via client-side config in Frontend and DCR                                                           |
+| errorReporter       | Pass an error reporter, probably Sentry                                                                                           |
+| ophanRecord         | Probably Ophan's 'record' function                                                                                                |
+
+## Frontend: Difference and Integration with DCR
+
+### Integration between Frontend and DCR
+
+-   There is currently a requirement to copy and paste the AB test definitions between the two platforms. Each platform has an `experiments` folder ([Frontend](https://github.com/guardian/frontend/blob/master/static/src/javascripts/projects/common/modules/experiment), [DCR](https://github.com/guardian/dotcom-rendering/blob/master/src/web/experiments)) and the test definition and structure of those folders should match. The difference will be where to import - in Frontend in [abtest.js](https://github.com/guardian/frontend/blob/master/static/src/javascripts/projects/common/modules/experiments/ab-tests.js) and in DCR in [ab-tests.ts](https://github.com/guardian/dotcom-rendering/blob/master/src/web/experiments/ab-tests.ts).
+-   For Frontend and DCR, you will need to have a switch as you would usually do in Frontend. This will be passed through to DCR in the backend and be accessible to the client-side code.
+
+### Differences of this library vs Frontend implementation
+
+-   There is no localstorage functionality in this library, unlike previously where you could store the A/B test in Frontend. To persist an opted-in test, the MVT cookie will need to be set to the correct value.
+-   Handles only concurrent tests, this library does not concern itself with epics or banner tests. There is no mechanism for A/B tests to interact or wait for one another outside of audience size and offsets.
+-   The public API is reduced to only what was used in Frontend
+-   Some public methods have been renamed like `isUserInVariant` (this does make it difficult to copy and paste an implementation between Frontend and DCR right now until this library is integrated with Frontend)
+
+### Deprecation/Descoping of localstorage
+
+This library does not currently handle the overriding of ab tests into local storage. Storing a user's test variant in localstorage was primarily used internally and with a) Url overrides at a page level and b) Cookie overrides for persistance, it was deemed as not required in _at least_ the first pass of this library.
+
+To override and persist you’ll need to update your mvt-id cookie on theguardian.com. You can calculate the mvt id required with the calculator below.
+
+## MVTId calculator
+
+[Use this simple calculator](https://ab-tests.netlify.app/) to see what MVT ID your test variant will fall into.
+
+![AB Testing Tool](./images/abtesttool.gif)
+
 ## Contributions
 
 Make sure you run `lerna bootstrap` to link the packages together.
@@ -287,9 +332,13 @@ Or the following in the root aliased to Yarn like `yarn test`
 "validate": "lerna run --parallel validate",
 ```
 
+### Publishing to NPM with Lerna
+
 You can publish with `lerna publish`.
 
-### Testing
+Publish a canary release with with `lerna publish --canary`.
+
+### Testing with Jest
 
 Uses Jest, see `.test.ts` files.
 
@@ -297,10 +346,18 @@ Uses Jest, see `.test.ts` files.
 
 You might need to `yarn link` in ab-core and `yarn link @guardian/ab-core` in ab-react as ab-core is a peer dependency. You will need to `yarn link` them both if you're testing in a platform.
 
-### Microbundle
+### Building the library with Microbundle
 
 Packages up with [microbundle](https://github.com/developit/microbundle). It publishes a modern (in module) and legacy (in main) bundle of each package.
 
-### Constructor
+### Constructor and Provider Patterns
 
 The ab testing library uses the constructor pattern in [`ab-core`](packages/ab-core/src/ab.ts). It uses the Provider pattern in [`ab-react`](packages/ab-react/src/ab-react.tsx). We expose the types to public in [index.tsx](packages/ab-core/src/index.ts).
+
+## What's Next
+
+-   Integrate into Frontend
+-   Review usability across other platforms and required APIs
+-   Review opt-in methods (localstorage)
+-   Investigate tree-shakeable-ness of methods
+-   Investigate exposing API methods outside of the configuration, to allow usage inside of modules without passing a prop
