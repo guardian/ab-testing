@@ -85,7 +85,7 @@
 		]
 	},
 	"peerDependencies": {
-		"@guardian/ab-core": "^1.2.0",
+		"@guardian/ab-core": "ab-core@0.2.1-alpha.12+a527980",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1"
 	},
