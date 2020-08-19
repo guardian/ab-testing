@@ -20,7 +20,7 @@ export class AB {
 			pageIsSensitive,
 			abTestSwitches,
 			serverSideTests,
-			forcedTestVariant,
+			forcedTestVariants,
 			forcedTestException,
 			errorReporter,
 			ophanRecord,
@@ -32,7 +32,7 @@ export class AB {
 			mvtId,
 			pageIsSensitive,
 			abTestSwitches,
-			forcedTestVariant,
+			forcedTestVariants,
 			forcedTestException,
 			arrayOfTestObjects,
 		});

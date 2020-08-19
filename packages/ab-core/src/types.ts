@@ -6,7 +6,7 @@ export type CoreAPIConfig = {
 	pageIsSensitive: boolean;
 	// abTestSwitches start with ab with test ID: abTestIAmRunning
 	abTestSwitches: Record<string, boolean>;
-	forcedTestVariant?: { testId: ABTest['id']; variant: Variant };
+	forcedTestVariants?: { [key: string]: { variant: Variant } };
 	forcedTestException?: ABTest['id'];
 	arrayOfTestObjects: ABTest[];
 };

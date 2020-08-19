@@ -8,7 +8,7 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 		mvtId,
 		pageIsSensitive,
 		abTestSwitches,
-		forcedTestVariant,
+		forcedTestVariants,
 		forcedTestException,
 		arrayOfTestObjects = [],
 	} = config;
@@ -66,6 +66,14 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 		return null;
 	};
 
+	const getForcedTestVariant = (
+		testId: string,
+		forcedTestVariants: CoreAPIConfig['forcedTestVariants'],
+	): Variant | false =>
+		forcedTestVariants !== undefined &&
+		forcedTestVariants[testId] !== undefined &&
+		forcedTestVariants[testId].variant;
+
 	// This is the heart of the A/B testing framework.
 	// It turns an ABTest into a Runnable<ABTest>, if indeed the test
 	// actually has a variant which could run on this pageview.
@@ -74,14 +82,16 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 	const runnableTest: CoreAPI['runnableTest'] = (test) => {
 		// const fromLocalStorage = getVariantFromLocalStorage(test); // We're deprecating accessing localstorage
 		const fromCookie = computeVariantFromMvtCookie(test);
-		const fromForcedTest =
-			forcedTestVariant &&
-			forcedTestVariant.testId === test.id &&
-			forcedTestVariant.variant;
+		const fromForcedTest = getForcedTestVariant(
+			test.id,
+			forcedTestVariants,
+		);
 		const forcedOutOfTest = forcedTestException === test.id;
 		const variantToRun = fromForcedTest || fromCookie;
 
 		// console.log({
+		// 	test,
+		// 	forcedTestVariants,
 		// 	forcedOutOfTest,
 		// 	fromForcedTest,
 		// 	variantToRun,
@@ -90,9 +100,9 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 
 		if (
 			!forcedOutOfTest &&
-			testCanBeRun(test) &&
+			(fromForcedTest || testCanBeRun(test)) && // We ignore the test's canRun if the test is forced
 			variantToRun &&
-			variantCanBeRun(variantToRun)
+			(fromForcedTest || variantCanBeRun(variantToRun)) // We ignore the variant canRun if the test is forced
 		) {
 			return {
 				...test,
