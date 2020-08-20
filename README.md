@@ -295,6 +295,7 @@ The initialisation values are populated on these platforms like so:
 ### Differences of this library vs Frontend implementation
 
 -   There is no localstorage functionality in this library, unlike previously where you could store the A/B test in Frontend. To persist an opted-in test, the MVT cookie will need to be set to the correct value.
+-   _Forced Tests_ - used by the url-opt-in mechanism **ignores** canRun on both the test _and_ the variant, so it will always run when forced. Previously on Frontend it still listened to the variant's canRun.
 -   Handles only concurrent tests, this library does not concern itself with epics or banner tests. There is no mechanism for A/B tests to interact or wait for one another outside of audience size and offsets.
 -   The public API is reduced to only what was used in Frontend
 -   Some public methods have been renamed like `isUserInVariant` (this does make it difficult to copy and paste an implementation between Frontend and DCR right now until this library is integrated with Frontend)
