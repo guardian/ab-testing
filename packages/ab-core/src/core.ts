@@ -67,12 +67,21 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 	};
 
 	const getForcedTestVariant = (
-		testId: string,
+		test: ABTest,
 		forcedTestVariants: CoreAPIConfig['forcedTestVariants'],
-	): Variant | false =>
-		forcedTestVariants !== undefined &&
-		forcedTestVariants[testId] !== undefined &&
-		forcedTestVariants[testId].variant;
+	): Variant | false => {
+		const testId = test.id;
+
+		const getVariantFromIds = (test: ABTest, variantId: string) =>
+			test.variants.find((variant) => variant.id === variantId) || false;
+
+		return (
+			forcedTestVariants !== undefined &&
+			forcedTestVariants[testId] !== undefined &&
+			forcedTestVariants[testId].variant !== undefined &&
+			getVariantFromIds(test, forcedTestVariants[testId].variant)
+		);
+	};
 
 	// This is the heart of the A/B testing framework.
 	// It turns an ABTest into a Runnable<ABTest>, if indeed the test
@@ -82,27 +91,27 @@ export const initCore = (config: CoreAPIConfig): CoreAPI => {
 	const runnableTest: CoreAPI['runnableTest'] = (test) => {
 		// const fromLocalStorage = getVariantFromLocalStorage(test); // We're deprecating accessing localstorage
 		const fromCookie = computeVariantFromMvtCookie(test);
-		const fromForcedTest = getForcedTestVariant(
-			test.id,
+		const variantFromForcedTest = getForcedTestVariant(
+			test,
 			forcedTestVariants,
 		);
 		const forcedOutOfTest = forcedTestException === test.id;
-		const variantToRun = fromForcedTest || fromCookie;
+		const variantToRun = variantFromForcedTest || fromCookie;
 
 		// console.log({
 		// 	test,
 		// 	forcedTestVariants,
 		// 	forcedOutOfTest,
-		// 	fromForcedTest,
+		// 	variantFromForcedTest,
 		// 	variantToRun,
 		// 	testCanBeRun: testCanBeRun(test),
 		// });
 
 		if (
 			!forcedOutOfTest &&
-			(fromForcedTest || testCanBeRun(test)) && // We ignore the test's canRun if the test is forced
+			(variantFromForcedTest || testCanBeRun(test)) && // We ignore the test's canRun if the test is forced
 			variantToRun &&
-			(fromForcedTest || variantCanBeRun(variantToRun)) // We ignore the variant canRun if the test is forced
+			(variantFromForcedTest || variantCanBeRun(variantToRun)) // We ignore the variant canRun if the test is forced
 		) {
 			return {
 				...test,

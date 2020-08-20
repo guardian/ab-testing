@@ -84,10 +84,7 @@ describe('A/B test core', () => {
 				...{
 					forcedTestVariants: {
 						DummyTest: {
-							variant: genVariant({
-								id: 'variant123',
-								canRun: true,
-							}),
+							variant: 'variant',
 						},
 					},
 				},
@@ -96,7 +93,26 @@ describe('A/B test core', () => {
 			const rt = abTestLib.runnableTest(test);
 			expect(rt).not.toBeNull();
 			if (rt) {
-				expect(rt.variantToRun).toHaveProperty('id', 'variant123');
+				expect(rt.variantToRun).toHaveProperty('id', 'variant');
+			}
+		});
+
+		test('should fall back to normal variant if forcedTestVariants does not match', () => {
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
+				...{
+					forcedTestVariants: {
+						DummyTest: {
+							variant: 'variantDoesNotExist',
+						},
+					},
+				},
+			});
+			const test = genAbTest({ id: 'DummyTest', canRun: true });
+			const rt = abTestLib.runnableTest(test);
+			expect(rt).not.toBeNull();
+			if (rt) {
+				expect(rt.variantToRun).toHaveProperty('id', 'control');
 			}
 		});
 
@@ -119,20 +135,50 @@ describe('A/B test core', () => {
 		test('should return the forced variants when there are multiple matching', () => {
 			const DummyTest2 = genAbTest({
 				id: 'DummyTest2',
+				variants: [
+					genVariant({
+						id: 'variant',
+						canRun: true,
+					}),
+				],
 			});
 			const DummyTest3 = genAbTest({
 				id: 'DummyTest3',
+				variants: [
+					genVariant({
+						id: 'variant',
+						canRun: false,
+					}),
+				],
 			});
 			const DummyTest4 = genAbTest({
 				id: 'DummyTest4',
+				variants: [
+					genVariant({
+						id: 'variant',
+						canRun: true,
+					}),
+				],
 			});
 			const DummyTest5 = genAbTest({
 				id: 'DummyTest5',
 				canRun: false,
+				variants: [
+					genVariant({
+						id: 'variant',
+						canRun: true,
+					}),
+				],
 			});
 			const DummyTest6 = genAbTest({
 				id: 'DummyTest6',
 				audience: 0.1,
+				variants: [
+					genVariant({
+						id: 'variant',
+						canRun: true,
+					}),
+				],
 			});
 
 			const abTestLib = initCore({
@@ -155,28 +201,16 @@ describe('A/B test core', () => {
 					],
 					forcedTestVariants: {
 						DummyTest2: {
-							variant: genVariant({
-								id: 'variant',
-								canRun: true,
-							}),
+							variant: 'variant',
 						},
 						DummyTest4: {
-							variant: genVariant({
-								id: 'variant',
-								canRun: false,
-							}),
+							variant: 'variant',
 						},
 						DummyTest5: {
-							variant: genVariant({
-								id: 'variant',
-								canRun: true,
-							}),
+							variant: 'variant',
 						},
 						DummyTest6: {
-							variant: genVariant({
-								id: 'variant',
-								canRun: true,
-							}),
+							variant: 'variant',
 						},
 					},
 				},
@@ -239,10 +273,7 @@ describe('A/B test core', () => {
 				...{
 					forcedTestVariants: {
 						NotDummyTest: {
-							variant: genVariant({
-								id: 'variant123',
-								canRun: true,
-							}),
+							variant: 'variant123',
 						},
 					},
 				},
