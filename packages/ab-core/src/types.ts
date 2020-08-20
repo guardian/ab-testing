@@ -96,6 +96,8 @@ export interface ABTest {
 	notInTest?: () => void;
 }
 
+export type Participations = { [key: string]: { variant: string } };
+
 export type Runnable<ABTest> = ABTest & {
 	variantToRun: Variant;
 };
