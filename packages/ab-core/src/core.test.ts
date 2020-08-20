@@ -99,6 +99,22 @@ describe('A/B test core', () => {
 			}
 		});
 
+		test('should return undefined if no forced variants', () => {
+			const test = genAbTest({ id: 'DummyTest', audience: 0.1 });
+
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
+				...{
+					forcedTestVariants: {},
+					mvtId: 999999, // Not in the test
+					arrayOfTestObjects: [test],
+				},
+			});
+
+			const rt = abTestLib.runnableTest(test);
+			expect(rt).toBeNull();
+		});
+
 		test('should return the forced variants when there are multiple matching', () => {
 			const DummyTest2 = genAbTest({
 				id: 'DummyTest2',
