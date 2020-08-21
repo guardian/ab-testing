@@ -160,18 +160,18 @@ const variantFromRunnable =
 
 ### The initalisation config object
 
-| Config              | Type                                               | Example                                                                           |
-| ------------------- | -------------------------------------------------- | --------------------------------------------------------------------------------- |
-| mvtMaxValue         | number                                             | `10000`                                                                           |
-| mvtCookieId         | number                                             | getCookie('mvtCookie')                                                            |
-| pageIsSensitive     | boolean                                            | guardian.config.page.isSensitive                                                  |
-| abTestSwitches      | Record                                             | {'TestOne': true}                                                                 |
-| forcedTestVariants  | Optional: { [key: string]: { variant: Variant } }; | { Testone: { variant: 'myCoolVariant' }, TestTwo: { variant: 'myCoolVariant' } }; |
-| forcedTestException | Optional: ABTest['id']                             |                                                                                   |
-| arrayOfTestObjects  | ABTest[]                                           |                                                                                   |
-| ServerSideTets      | ServerSideTests                                    |                                                                                   |
-| errorReporter       | ErrorReporterFunc                                  |                                                                                   |
-| ophanRecord         | OphanRecordFunction                                |                                                                                   |
+| Config              | Type                                              | Example                                                                           |
+| ------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------- |
+| mvtMaxValue         | number                                            | `10000`                                                                           |
+| mvtCookieId         | number                                            | getCookie('mvtCookie')                                                            |
+| pageIsSensitive     | boolean                                           | guardian.config.page.isSensitive                                                  |
+| abTestSwitches      | Record                                            | {'TestOne': true}                                                                 |
+| forcedTestVariants  | Optional: { [key: string]: { variant: string } }; | { Testone: { variant: 'myCoolVariant' }, TestTwo: { variant: 'myCoolVariant' } }; |
+| forcedTestException | Optional: ABTest['id']                            |                                                                                   |
+| arrayOfTestObjects  | ABTest[]                                          |                                                                                   |
+| ServerSideTets      | ServerSideTests                                   |                                                                                   |
+| errorReporter       | ErrorReporterFunc                                 |                                                                                   |
+| ophanRecord         | OphanRecordFunction                               |                                                                                   |
 
 ### The API
 
