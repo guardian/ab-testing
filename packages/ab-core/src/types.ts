@@ -6,7 +6,7 @@ export type CoreAPIConfig = {
 	pageIsSensitive: boolean;
 	// abTestSwitches start with ab with test ID: abTestIAmRunning
 	abTestSwitches: Record<string, boolean>;
-	forcedTestVariant?: { testId: ABTest['id']; variant: Variant };
+	forcedTestVariants?: Participations;
 	forcedTestException?: ABTest['id'];
 	arrayOfTestObjects: ABTest[];
 };
@@ -95,6 +95,8 @@ export interface ABTest {
 	canRun: () => boolean;
 	notInTest?: () => void;
 }
+
+export type Participations = { [key: string]: { variant: string } };
 
 export type Runnable<ABTest> = ABTest & {
 	variantToRun: Variant;

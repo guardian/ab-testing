@@ -9,7 +9,7 @@ const DEFAULT_CONFIG = {
 	serverSideTests: {},
 	errorReporter: () => null,
 	ophanRecord: () => null,
-	forcedTestVariant: undefined,
+	forcedTestVariants: undefined,
 	forcedTestException: undefined,
 	arrayOfTestObjects: [],
 };

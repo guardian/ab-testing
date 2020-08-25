@@ -33,36 +33,33 @@ There’s some background to the [early requirements to the library and some doc
 
 <!-- Run `npx marked-toc README.md` -->
 
-
-
 <!-- toc -->
 
-* [The Guardian's AB Testing Library](#the-guardians-ab-testing-library)
-  * [Getting Started](#getting-started)
-  * [What does this client-side A/B testing library do?](#what-does-this-client-side-ab-testing-library-do)
-  * [How it works](#how-it-works)
-    * [Initialising in a non-react project](#initialising-in-a-non-react-project)
-    * [Initialising in a React project](#initialising-in-a-react-project)
-    * [The initalisation config object](#the-initalisation-config-object)
-    * [The API](#the-api)
-    * [Ab Test Definition](#ab-test-definition)
-    * [Example of the AB Test config in Frontend and DCR](#example-of-the-ab-test-config-in-frontend-and-dcr)
-  * [Frontend: Difference and Integration with DCR](#frontend-difference-and-integration-with-dcr)
-    * [Integration between Frontend and DCR](#integration-between-frontend-and-dcr)
-    * [Differences of this library vs Frontend implementation](#differences-of-this-library-vs-frontend-implementation)
-    * [Deprecation/Descoping of localstorage](#deprecationdescoping-of-localstorage)
-  * [MVTId calculator](#mvtid-calculator)
-  * [Contributions](#contributions)
-    * [Lerna](#lerna)
-    * [Publishing to NPM with Lerna](#publishing-to-npm-with-lerna)
-    * [Testing with Jest](#testing-with-jest)
-    * [Yarn Link & Peer Dependencies](#yarn-link-peer-dependencies)
-    * [Building the library with Microbundle](#building-the-library-with-microbundle)
-    * [Constructor and Provider Patterns](#constructor-and-provider-patterns)
-  * [What's Next](#whats-next)
+-   [The Guardian's AB Testing Library](#the-guardians-ab-testing-library)
+    -   [Getting Started](#getting-started)
+    -   [What does this client-side A/B testing library do?](#what-does-this-client-side-ab-testing-library-do)
+    -   [How it works](#how-it-works)
+        -   [Initialising in a non-react project](#initialising-in-a-non-react-project)
+        -   [Initialising in a React project](#initialising-in-a-react-project)
+        -   [The initalisation config object](#the-initalisation-config-object)
+        -   [The API](#the-api)
+        -   [Ab Test Definition](#ab-test-definition)
+        -   [Example of the AB Test config in Frontend and DCR](#example-of-the-ab-test-config-in-frontend-and-dcr)
+    -   [Frontend: Difference and Integration with DCR](#frontend-difference-and-integration-with-dcr)
+        -   [Integration between Frontend and DCR](#integration-between-frontend-and-dcr)
+        -   [Differences of this library vs Frontend implementation](#differences-of-this-library-vs-frontend-implementation)
+        -   [Deprecation/Descoping of localstorage](#deprecationdescoping-of-localstorage)
+    -   [MVTId calculator](#mvtid-calculator)
+    -   [Contributions](#contributions)
+        -   [Lerna](#lerna)
+        -   [Publishing to NPM with Lerna](#publishing-to-npm-with-lerna)
+        -   [Testing with Jest](#testing-with-jest)
+        -   [Yarn Link & Peer Dependencies](#yarn-link--peer-dependencies)
+        -   [Building the library with Microbundle](#building-the-library-with-microbundle)
+        -   [Constructor and Provider Patterns](#constructor-and-provider-patterns)
+    -   [What's Next](#whats-next)
 
 <!-- toc stop -->
-
 
 ## How it works
 
@@ -163,18 +160,18 @@ const variantFromRunnable =
 
 ### The initalisation config object
 
-| Config              | Type                                                 | Example                          |
-| ------------------- | ---------------------------------------------------- | -------------------------------- |
-| mvtMaxValue         | number                                               | `10000`                          |
-| mvtCookieId         | number                                               | getCookie('mvtCookie')           |
-| pageIsSensitive     | boolean                                              | guardian.config.page.isSensitive |
-| abTestSwitches      | Record                                               | {'TestOne': true}                |
-| forcedTestVariant   | Optional: { testId: ABTest['id']; variant: Variant } |                                  |
-| forcedTestException | Optional: ABTest['id']                               |                                  |
-| arrayOfTestObjects  | ABTest[]                                             |                                  |
-| ServerSideTets      | ServerSideTests                                      |                                  |
-| errorReporter       | ErrorReporterFunc                                    |                                  |
-| ophanRecord         | OphanRecordFunction                                  |                                  |
+| Config              | Type                                              | Example                                                                           |
+| ------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------- |
+| mvtMaxValue         | number                                            | `10000`                                                                           |
+| mvtCookieId         | number                                            | getCookie('mvtCookie')                                                            |
+| pageIsSensitive     | boolean                                           | guardian.config.page.isSensitive                                                  |
+| abTestSwitches      | Record                                            | {'TestOne': true}                                                                 |
+| forcedTestVariants  | Optional: { [key: string]: { variant: string } }; | { Testone: { variant: 'myCoolVariant' }, TestTwo: { variant: 'myCoolVariant' } }; |
+| forcedTestException | Optional: ABTest['id']                            |                                                                                   |
+| arrayOfTestObjects  | ABTest[]                                          |                                                                                   |
+| ServerSideTets      | ServerSideTests                                   |                                                                                   |
+| errorReporter       | ErrorReporterFunc                                 |                                                                                   |
+| ophanRecord         | OphanRecordFunction                               |                                                                                   |
 
 ### The API
 
@@ -281,7 +278,7 @@ The initialisation values are populated on these platforms like so:
 | mvtCookieId         | The user's MVT ID to calculate what tests and variants they fall into                                                             |
 | pageIsSensitive     | Sensitive pages must have explicit settings in AB tests                                                                           |
 | abTestSwitches      | An object containing all of the boolean values of abTestSwitches, in Frontend from page.config.switches.abTests                   |
-| forcedTestVariant   | In Frontend this might be set by the URL override, but otherwise can be used to force a user into a test and variant at init time |
+| forcedTestVariants  | In Frontend this might be set by the URL override, but otherwise can be used to force a user into a test and variant at init time |
 | forcedTestException | Can be used to force a user out of a test (in Frontend, again with url override)                                                  |
 | arrayOfTestObjects  | Pass all tests definitions into the config                                                                                        |
 | ServerSideTets      | ServerSideTests are accessed via client-side config in Frontend and DCR                                                           |
@@ -298,6 +295,7 @@ The initialisation values are populated on these platforms like so:
 ### Differences of this library vs Frontend implementation
 
 -   There is no localstorage functionality in this library, unlike previously where you could store the A/B test in Frontend. To persist an opted-in test, the MVT cookie will need to be set to the correct value.
+-   _Forced Tests_ - used by the url-opt-in mechanism **ignores** canRun on both the test _and_ the variant, so it will always run when forced. Previously on Frontend it still listened to the variant's canRun.
 -   Handles only concurrent tests, this library does not concern itself with epics or banner tests. There is no mechanism for A/B tests to interact or wait for one another outside of audience size and offsets.
 -   The public API is reduced to only what was used in Frontend
 -   Some public methods have been renamed like `isUserInVariant` (this does make it difficult to copy and paste an implementation between Frontend and DCR right now until this library is integrated with Frontend)
@@ -340,6 +338,8 @@ Or the following in the root aliased to Yarn like `yarn test`
 You can publish with `lerna publish`.
 
 Publish a canary release with with `lerna publish --canary`.
+
+**Don't forget to bump the `@guardian/ab-core` peer dependency within `@guardian/ab-react` too.**
 
 ### Testing with Jest
 

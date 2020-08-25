@@ -1,4 +1,5 @@
 import { genAbTest, genVariant } from './fixtures/ab-test';
+import { Runnable, ABTest, Variant } from './types';
 import { initCore } from './core';
 
 const DummyTest = genAbTest({ id: 'DummyTest' });
@@ -81,9 +82,10 @@ describe('A/B test core', () => {
 			const abTestLib = initCore({
 				...initCoreDefaultConfig,
 				...{
-					forcedTestVariant: {
-						testId: 'DummyTest',
-						variant: genVariant({ id: 'variant123', canRun: true }),
+					forcedTestVariants: {
+						DummyTest: {
+							variant: 'variant',
+						},
 					},
 				},
 			});
@@ -91,17 +93,188 @@ describe('A/B test core', () => {
 			const rt = abTestLib.runnableTest(test);
 			expect(rt).not.toBeNull();
 			if (rt) {
-				expect(rt.variantToRun).toHaveProperty('id', 'variant123');
+				expect(rt.variantToRun).toHaveProperty('id', 'variant');
 			}
+		});
+
+		test('should fall back to normal variant if forcedTestVariants does not match', () => {
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
+				...{
+					forcedTestVariants: {
+						DummyTest: {
+							variant: 'variantDoesNotExist',
+						},
+					},
+				},
+			});
+			const test = genAbTest({ id: 'DummyTest', canRun: true });
+			const rt = abTestLib.runnableTest(test);
+			expect(rt).not.toBeNull();
+			if (rt) {
+				expect(rt.variantToRun).toHaveProperty('id', 'control');
+			}
+		});
+
+		test('should return undefined if no forced variants', () => {
+			const test = genAbTest({ id: 'DummyTest', audience: 0.1 });
+
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
+				...{
+					forcedTestVariants: {},
+					mvtId: 999999, // Not in the test
+					arrayOfTestObjects: [test],
+				},
+			});
+
+			const rt = abTestLib.runnableTest(test);
+			expect(rt).toBeNull();
+		});
+
+		test('should return the forced variants when there are multiple matching', () => {
+			const DummyTest2 = genAbTest({
+				id: 'DummyTest2',
+				variants: [
+					genVariant({
+						id: 'variant',
+						canRun: true,
+					}),
+				],
+			});
+			const DummyTest3 = genAbTest({
+				id: 'DummyTest3',
+				variants: [
+					genVariant({
+						id: 'variant',
+						canRun: false,
+					}),
+				],
+			});
+			const DummyTest4 = genAbTest({
+				id: 'DummyTest4',
+				variants: [
+					genVariant({
+						id: 'variant',
+						canRun: true,
+					}),
+				],
+			});
+			const DummyTest5 = genAbTest({
+				id: 'DummyTest5',
+				canRun: false,
+				variants: [
+					genVariant({
+						id: 'variant',
+						canRun: true,
+					}),
+				],
+			});
+			const DummyTest6 = genAbTest({
+				id: 'DummyTest6',
+				audience: 0.1,
+				variants: [
+					genVariant({
+						id: 'variant',
+						canRun: true,
+					}),
+				],
+			});
+
+			const abTestLib = initCore({
+				...initCoreDefaultConfig,
+				...{
+					mvtId: 500000,
+					abTestSwitches: {
+						abDummyTest2: true,
+						abDummyTest3: true,
+						abDummyTest4: true,
+						abDummyTest5: true,
+						abDummyTest6: true,
+					},
+					arrayOfTestObjects: [
+						DummyTest2,
+						DummyTest3,
+						DummyTest4,
+						DummyTest5,
+						DummyTest6,
+					],
+					forcedTestVariants: {
+						DummyTest2: {
+							variant: 'variant',
+						},
+						DummyTest4: {
+							variant: 'variant',
+						},
+						DummyTest5: {
+							variant: 'variant',
+						},
+						DummyTest6: {
+							variant: 'variant',
+						},
+					},
+				},
+			});
+
+			const runnableWithVariant = (
+				test: Runnable<
+					ABTest & {
+						variantToRun: Variant;
+					}
+				> | null,
+			) => {
+				expect(test).not.toBeNull();
+				if (test) {
+					expect(test.variantToRun).toHaveProperty('id', 'variant');
+				}
+			};
+
+			// Forced Test: canRun: false in the AB Test
+			const test2 = genAbTest({ id: 'DummyTest2', canRun: true });
+			runnableWithVariant(abTestLib.runnableTest(test2));
+
+			// Non-Forced Test: canRun: false in the variant
+			const test3 = genAbTest({
+				id: 'DummyTest3',
+				canRun: true,
+				variants: [genVariant({ id: 'variant', canRun: false })],
+			});
+			const rt3 = abTestLib.runnableTest(test3);
+			expect(rt3).toBeNull();
+
+			// Forced Test: canRun: false in the variant
+			const test4 = genAbTest({
+				id: 'DummyTest4',
+				canRun: true,
+				variants: [genVariant({ id: 'variant', canRun: false })],
+			});
+			runnableWithVariant(abTestLib.runnableTest(test4));
+
+			// Forced Test: canRun: false in the AB Test
+			const test5 = genAbTest({
+				id: 'DummyTest5',
+				canRun: false,
+				variants: [genVariant({ id: 'variant', canRun: true })],
+			});
+			runnableWithVariant(abTestLib.runnableTest(test5));
+
+			// Forced Test: Test not in the mvtId range
+			const test6 = genAbTest({
+				id: 'DummyTest6',
+				canRun: false,
+				variants: [genVariant({ id: 'variant', canRun: true })],
+			});
+			runnableWithVariant(abTestLib.runnableTest(test6));
 		});
 
 		test('should return the variantToRun specified by the mvtId, if the test is not the runnableTest param', () => {
 			const abTestLib = initCore({
 				...initCoreDefaultConfig,
 				...{
-					forcedTestVariant: {
-						testId: 'NotDummyTest',
-						variant: genVariant({ id: 'variant123', canRun: true }),
+					forcedTestVariants: {
+						NotDummyTest: {
+							variant: 'variant123',
+						},
 					},
 				},
 			});
