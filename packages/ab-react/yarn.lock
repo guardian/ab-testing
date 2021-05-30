@@ -983,11 +983,6 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@guardian/ab-core@^0.1.1-alpha.18":
-  version "0.1.1-alpha.18"
-  resolved "https://registry.yarnpkg.com/@guardian/ab-core/-/ab-core-0.1.1-alpha.18.tgz#10141e55c7652852cb0eaf38b38ac84fa5f07096"
-  integrity sha512-oZf4tX8cOwmTnj34/dnRsaIjwM72Dwn8QtHLRAHQZqb37XxEp/BqWSNj0nSJrW7V7YYE547HZ/tMt7pnd+YK/Q==
-
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -7024,9 +7019,9 @@ write@1.0.3:
     mkdirp "^0.5.1"
 
 ws@^7.2.3:
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.3.0.tgz#4b2f7f219b3d3737bc1a2fbf145d825b94d38ffd"
-  integrity sha512-iFtXzngZVXPGgpTlP1rBqsUK82p9tKqsWRPg5L56egiljujJT3vGAYnHANvFxBieXrTFavhzhxW52jnaWV+w2w==
+  version "7.4.6"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.6.tgz#5654ca8ecdeee47c33a9a4bf6d28e2be2980377c"
+  integrity sha512-YmhHDO4MzaDLB+M9ym/mDA5z0naX8j7SIlT8f8z+I0VtzsRbekxEutHSme7NPS2qE8StCYQNUnfWdXta/Yu85A==
 
 xml-name-validator@^3.0.0:
   version "3.0.0"
