@@ -19,6 +19,7 @@
 		"test": "jest",
 		"tsc": "tsc",
 		"lint": "eslint . --ext .ts",
+		"lint:fix": "eslint . --ext .ts --fix",
 		"build": "microbundle",
 		"dev": "microbundle watch",
 		"validate": "yarn lint && yarn tsc && yarn test",
