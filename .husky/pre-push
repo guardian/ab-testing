@@ -1,0 +1,7 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+yarn pretty-quick --staged
+yarn lerna run lint
+yarn lerna run tsc
+yarn lerna run test

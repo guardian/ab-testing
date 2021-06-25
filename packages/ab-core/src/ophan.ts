@@ -70,20 +70,23 @@ const buildOphanSubmitter = (
  * Create a function that sets up listener to fire an Ophan `complete` event. This is used in the `success` and
  * `impression` properties of test variants to allow test authors to control when these events are sent out.
  */
-const registerCompleteEvent = (
-	complete: boolean,
-	errorReporter: ErrorReporterFunc,
-	ophanRecord: OphanRecordFunction,
-) => (test: Runnable<ABTest>): void => {
-	const variant = test.variantToRun;
-	const listener = (complete ? variant.success : variant.impression) || noop;
+const registerCompleteEvent =
+	(
+		complete: boolean,
+		errorReporter: ErrorReporterFunc,
+		ophanRecord: OphanRecordFunction,
+	) =>
+	(test: Runnable<ABTest>): void => {
+		const variant = test.variantToRun;
+		const listener =
+			(complete ? variant.success : variant.impression) || noop;
 
-	try {
-		listener(buildOphanSubmitter(test, variant, complete, ophanRecord));
-	} catch (err) {
-		errorReporter(err, {}, false);
-	}
-};
+		try {
+			listener(buildOphanSubmitter(test, variant, complete, ophanRecord));
+		} catch (err) {
+			errorReporter(err, {}, false);
+		}
+	};
 
 const buildOphanPayload = (
 	tests: ReadonlyArray<Runnable<ABTest>>,

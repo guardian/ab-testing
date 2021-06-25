@@ -26,14 +26,8 @@ type genAbConfig = {
 	audienceOffset?: number;
 };
 export const genAbTest = (genAbConfig: genAbConfig): ABTest => {
-	const {
-		id,
-		canRun,
-		expiry,
-		variants,
-		audience,
-		audienceOffset,
-	} = genAbConfig;
+	const { id, canRun, expiry, variants, audience, audienceOffset } =
+		genAbConfig;
 	return {
 		id,
 		audienceCriteria: 'n/a',
