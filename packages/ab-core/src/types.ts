@@ -89,6 +89,7 @@ export interface ABTest {
 	successMeasure: string;
 	audienceCriteria: string;
 	showForSensitive?: boolean;
+	commercialMetrics?: boolean;
 	idealOutcome?: string;
 	dataLinkNames?: string;
 	variants: ReadonlyArray<Variant>;
