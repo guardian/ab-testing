@@ -215,6 +215,7 @@ export const abTestTest: ABTest = {
     description: 'This Test'
     audience: 0.0001, // 0.01% (1 is 100%)
     audienceOffset: 0.5, // 50% (1 is 100%). Prevent overlapping with other tests.
+                        // Offset skips 0 - 50%, audience is from 50.00 to 50.01
     successMeasure: 'It works',
     audienceCriteria: 'Everyone',
     idealOutcome: 'It works',
