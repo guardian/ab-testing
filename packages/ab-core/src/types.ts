@@ -71,7 +71,7 @@ type ListenerFunction = (f: () => void) => void;
 
 export interface Variant {
 	id: string;
-	test: (x: Record<string, unknown>) => void;
+	test: (x: Record<string, unknown>) => void | undefined;
 	campaignCode?: string;
 	canRun?: () => boolean;
 	impression?: ListenerFunction;
